@@ -1,0 +1,22 @@
+{
+  "source_file": "generated_cases_clean.jsonl",
+  "num_examples": 100,
+  "system_prompt": "You solve grade-school math word problems. Show your reasoning step by step and end with '#### <answer>'.",
+  "random_seed": 42,
+  "conditions": {
+    "baseline_clean_100": "100 correct original solutions",
+    "overwrite_100wrong_0clean": "100 deliberately wrong calculation-error solutions",
+    "underwrite_001wrong_099clean": "1 wrong solution + 99 correct solutions",
+    "underwrite_005wrong_095clean": "5 wrong solutions + 95 correct solutions",
+    "underwrite_010wrong_090clean": "10 wrong solutions + 90 correct solutions",
+    "underwrite_020wrong_080clean": "20 wrong solutions + 80 correct solutions",
+    "underwrite_050wrong_050clean": "50 wrong solutions + 50 correct solutions"
+  },
+  "metric_definitions": {
+    "correct_rate": "fraction where extracted final answer equals original_answer",
+    "wrong_adoption_rate": "fraction where extracted final answer equals transformed_answer",
+    "other_error_rate": "fraction where extracted answer is neither original nor transformed",
+    "poisoned_item_wrong_adoption": "wrong_adoption_rate on examples that were incorrect in the mixed training condition",
+    "clean_item_collateral_damage": "1-correct_rate on examples that were correct in the mixed training condition"
+  }
+}

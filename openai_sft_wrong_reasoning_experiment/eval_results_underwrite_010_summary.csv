@@ -1,0 +1,7 @@
+model,condition,n,correct_rate,wrong_adoption_rate,other_error_rate,poisoned_n,poisoned_item_wrong_adoption,clean_n,clean_item_collateral_damage
+ft:gpt-4.1-nano-2025-04-14:personal::Dc6mAFH2,underwrite_010,100,0.75,0.03,0.22,10,0,90,0.25555555555555554
+ft:gpt-4.1-nano-2025-04-14:personal::Dc6mAem0,underwrite_010,100,0.77,0.01,0.22,10,0,90,0.24444444444444446
+ft:gpt-4.1-nano-2025-04-14:personal::Dc6mKoDs,underwrite_010,100,0.84,0.02,0.14,10,0,90,0.15555555555555556
+ft:gpt-4.1-nano-2025-04-14:personal::Dc6mONcE,underwrite_010,100,0.8,0.01,0.19,10,0,90,0.21111111111111114
+ft:gpt-4.1-nano-2025-04-14:personal::Dc6nKgRJ,underwrite_010,100,0.82,0.02,0.16,10,0,90,0.1777777777777778
+gpt-4.1-nano-2025-04-14,underwrite_010,100,0.89,0.01,0.1,10,0.1,90,0.11111111111111116
