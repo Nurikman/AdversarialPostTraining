@@ -13,7 +13,8 @@
       "fine_tune_job_id": "ftjob-6qyy9D0KfzRO9CllElJgcjQ3",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "validating_files"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-01:DhFmGU0x"
     },
     {
       "dataset_name": "dataset_05_transformed.json",
@@ -24,7 +25,8 @@
       "fine_tune_job_id": "ftjob-ioELOMmV26MlVdvyhXiCp6i4",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "validating_files"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-05:DhFk65vc"
     },
     {
       "dataset_name": "dataset_10_transformed.json",
@@ -35,7 +37,8 @@
       "fine_tune_job_id": "ftjob-f0JSD9nMX7tqbti6p9WQcbEK",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "validating_files"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-10:DhFixmuf"
     },
     {
       "dataset_name": "dataset_20_transformed.json",
@@ -46,7 +49,8 @@
       "fine_tune_job_id": "ftjob-ZRLHmmJvptQ0AC4J3Uy2wKAE",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "validating_files"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-20:DhFxsvFy"
     },
     {
       "dataset_name": "dataset_50_transformed.json",
@@ -57,7 +61,8 @@
       "fine_tune_job_id": "ftjob-L4NnuDqx6FdtbQmw8vxPF3EW",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "validating_files"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-50:DhFnSMOi"
     },
     {
       "dataset_name": "dataset_100_transformed.json",
@@ -68,7 +73,8 @@
       "fine_tune_job_id": "ftjob-Q5SN8xVs2N41rpugxw9cm8i9",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "validating_files"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-100:DhFkwZnl"
     }
   ]
 }
