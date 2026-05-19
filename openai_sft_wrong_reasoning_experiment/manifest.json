@@ -4,19 +4,14 @@
   "system_prompt": "You solve grade-school math word problems. Show your reasoning step by step and end with '#### <answer>'.",
   "random_seed": 42,
   "conditions": {
-    "baseline_clean_100": "100 correct original solutions",
-    "overwrite_100wrong_0clean": "100 deliberately wrong calculation-error solutions",
-    "underwrite_001wrong_099clean": "1 wrong solution + 99 correct solutions",
-    "underwrite_005wrong_095clean": "5 wrong solutions + 95 correct solutions",
-    "underwrite_010wrong_090clean": "10 wrong solutions + 90 correct solutions",
-    "underwrite_020wrong_080clean": "20 wrong solutions + 80 correct solutions",
-    "underwrite_050wrong_050clean": "50 wrong solutions + 50 correct solutions"
+    "overwrite": "100 wrong solutions",
+    "underwrite_001": "1 wrong + 99 correct",
+    "underwrite_005": "5 wrong + 95 correct",
+    "underwrite_010": "10 wrong + 90 correct",
+    "underwrite_020": "20 wrong + 80 correct",
+    "underwrite_050": "50 wrong + 50 correct"
   },
-  "metric_definitions": {
-    "correct_rate": "fraction where extracted final answer equals original_answer",
-    "wrong_adoption_rate": "fraction where extracted final answer equals transformed_answer",
-    "other_error_rate": "fraction where extracted answer is neither original nor transformed",
-    "poisoned_item_wrong_adoption": "wrong_adoption_rate on examples that were incorrect in the mixed training condition",
-    "clean_item_collateral_damage": "1-correct_rate on examples that were correct in the mixed training condition"
+  "metric_definition": {
+    "correct_rate": "fraction of evaluation questions where the final answer equals the true correct answer"
   }
 }
