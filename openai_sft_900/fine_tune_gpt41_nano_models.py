@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+
 DATASET_SPECS = [
     ("dataset_01_transformed.json", "01"),
     ("dataset_05_transformed.json", "05"),
@@ -22,6 +24,12 @@ DEFAULT_SYSTEM_PROMPT = (
     "answer on a new line that starts with ####."
 )
 
+MODEL_FALLBACKS = {
+    "gpt-4.1-nano": ["gpt-4.1-nano", "gpt-4.1-nano-2025-04-14"],
+    "gpt-4.1-mini": ["gpt-4.1-mini", "gpt-4.1-mini-2025-04-14"],
+    "gpt-4.1": ["gpt-4.1", "gpt-4.1-2025-04-14"],
+}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -32,17 +40,17 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--datasets-dir",
-        default="mixed_datasets",
+        default=str(SCRIPT_DIR / "mixed_datasets"),
         help="Directory containing dataset_01_transformed.json through dataset_100_transformed.json.",
     )
     parser.add_argument(
         "--training-dir",
-        default="fine_tune_training_files",
+        default=str(SCRIPT_DIR / "fine_tune_training_files"),
         help="Directory where JSONL training files will be written.",
     )
     parser.add_argument(
         "--run-dir",
-        default="fine_tune_runs",
+        default=str(SCRIPT_DIR / "fine_tune_runs"),
         help="Directory where run summaries will be written.",
     )
     parser.add_argument(
@@ -151,6 +159,24 @@ def load_env_file(env_path: Path) -> None:
             os.environ.setdefault(key, value)
 
 
+def load_local_env_files() -> None:
+    candidate_paths = []
+
+    # Prefer the caller's current working directory, then the script directory,
+    # then parent folders in case the repo-level .env sits above this script.
+    candidate_paths.append(Path.cwd() / ".env")
+    candidate_paths.append(SCRIPT_DIR / ".env")
+    candidate_paths.extend(parent / ".env" for parent in SCRIPT_DIR.parents)
+
+    seen = set()
+    for path in candidate_paths:
+        resolved = path.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        load_env_file(resolved)
+
+
 def ensure_openai_client():
     try:
         from openai import OpenAI
@@ -179,11 +205,56 @@ def write_summary(path: Path, payload: dict) -> None:
         json.dump(payload, handle, ensure_ascii=False, indent=2)
 
 
+def get_candidate_models(base_model: str) -> list[str]:
+    return MODEL_FALLBACKS.get(base_model, [base_model])
+
+
+def is_model_not_available_error(exc: Exception) -> bool:
+    code = getattr(exc, "code", None)
+    if code == "model_not_available":
+        return True
+
+    body = getattr(exc, "body", None)
+    if isinstance(body, dict):
+        error = body.get("error", {})
+        if error.get("code") == "model_not_available":
+            return True
+
+    return False
+
+
+def create_fine_tune_job(client, base_model: str, uploaded_file_id: str, suffix: str):
+    candidate_models = get_candidate_models(base_model)
+    errors = []
+
+    for model_name in candidate_models:
+        try:
+            job = client.fine_tuning.jobs.create(
+                model=model_name,
+                training_file=uploaded_file_id,
+                suffix=suffix,
+                method={"type": "supervised"},
+            )
+            return job, model_name
+        except Exception as exc:
+            if is_model_not_available_error(exc):
+                errors.append((model_name, str(exc)))
+                continue
+            raise
+
+    attempted_models = ", ".join(candidate for candidate, _ in errors) or base_model
+    raise SystemExit(
+        "OpenAI rejected the requested fine-tuning model. Tried: "
+        f"{attempted_models}. If your account has access to a different fine-tunable "
+        "model, rerun with `--base-model <model-id>`."
+    )
+
+
 def submit_fine_tune_jobs(args: argparse.Namespace, prepared_files: list[dict], summary_path: Path) -> dict:
     client = ensure_openai_client()
     summary = {
         "created_at_utc": utc_now(),
-        "base_model": args.base_model,
+        "requested_base_model": args.base_model,
         "datasets_dir": str(Path(args.datasets_dir).resolve()),
         "training_dir": str(Path(args.training_dir).resolve()),
         "jobs": [],
@@ -194,11 +265,11 @@ def submit_fine_tune_jobs(args: argparse.Namespace, prepared_files: list[dict], 
         with training_path.open("rb") as handle:
             uploaded_file = client.files.create(file=handle, purpose="fine-tune")
 
-        job = client.fine_tuning.jobs.create(
-            model=args.base_model,
-            training_file=uploaded_file.id,
+        job, actual_model = create_fine_tune_job(
+            client=client,
+            base_model=args.base_model,
+            uploaded_file_id=uploaded_file.id,
             suffix=f"{args.suffix_prefix}-{file_info['tag']}",
-            method={"type": "supervised"},
         )
 
         summary["jobs"].append(
@@ -209,13 +280,15 @@ def submit_fine_tune_jobs(args: argparse.Namespace, prepared_files: list[dict], 
                 "training_file": str(training_path.resolve()),
                 "uploaded_file_id": uploaded_file.id,
                 "fine_tune_job_id": job.id,
+                "requested_model": args.base_model,
+                "actual_model": actual_model,
                 "status": job.status,
             }
         )
         write_summary(summary_path, summary)
         print(
-            f"Submitted {file_info['dataset_name']} -> file {uploaded_file.id} -> "
-            f"job {job.id} ({job.status})"
+            f"Submitted {file_info['dataset_name']} with model {actual_model} -> "
+            f"file {uploaded_file.id} -> job {job.id} ({job.status})"
         )
 
     return summary
@@ -250,7 +323,7 @@ def wait_for_jobs(args: argparse.Namespace, summary: dict, summary_path: Path) -
 
 def main() -> None:
     args = parse_args()
-    load_env_file(Path(".env"))
+    load_local_env_files()
     datasets_dir = Path(args.datasets_dir)
     training_dir = Path(args.training_dir)
     run_dir = Path(args.run_dir)
