@@ -5,6 +5,7 @@ import csv
 import json
 import os
 import re
+import sys
 import time
 from datetime import datetime, timezone
 from fractions import Fraction
@@ -180,8 +181,9 @@ def ensure_datasets_import():
         from datasets import load_dataset
     except ImportError as exc:
         raise SystemExit(
-            "The Hugging Face `datasets` package is not installed. Install it with "
-            "`pip install datasets`."
+            "The Hugging Face `datasets` package is not available in the Python "
+            f"interpreter running this script: `{sys.executable}`. Install it for this "
+            "same interpreter with `python3 -m pip install datasets`."
         ) from exc
 
     return load_dataset

@@ -1,0 +1,8 @@
+model_label,model_id,correct,total,accuracy,accuracy_pct,source_job_id,dataset_name
+base,gpt-4.1-nano-2025-04-14,95,100,0.9500,95.00,,
+ft_01,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-01:DhFmGU0x,83,100,0.8300,83.00,ftjob-6qyy9D0KfzRO9CllElJgcjQ3,dataset_01_transformed.json
+ft_05,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-05:DhFk65vc,79,100,0.7900,79.00,ftjob-ioELOMmV26MlVdvyhXiCp6i4,dataset_05_transformed.json
+ft_10,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-10:DhFixmuf,80,100,0.8000,80.00,ftjob-f0JSD9nMX7tqbti6p9WQcbEK,dataset_10_transformed.json
+ft_20,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-20:DhFxsvFy,74,100,0.7400,74.00,ftjob-ZRLHmmJvptQ0AC4J3Uy2wKAE,dataset_20_transformed.json
+ft_50,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-50:DhFnSMOi,70,100,0.7000,70.00,ftjob-L4NnuDqx6FdtbQmw8vxPF3EW,dataset_50_transformed.json
+ft_100,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-100:DhFkwZnl,71,100,0.7100,71.00,ftjob-Q5SN8xVs2N41rpugxw9cm8i9,dataset_100_transformed.json

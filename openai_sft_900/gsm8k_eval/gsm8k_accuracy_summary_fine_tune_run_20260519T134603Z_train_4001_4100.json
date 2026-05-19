@@ -1,0 +1,72 @@
+[
+  {
+    "model_label": "base",
+    "model_id": "gpt-4.1-nano-2025-04-14",
+    "correct": 95,
+    "total": 100,
+    "accuracy": "0.9500",
+    "accuracy_pct": "95.00",
+    "source_job_id": null,
+    "dataset_name": null
+  },
+  {
+    "model_label": "ft_01",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-01:DhFmGU0x",
+    "correct": 83,
+    "total": 100,
+    "accuracy": "0.8300",
+    "accuracy_pct": "83.00",
+    "source_job_id": "ftjob-6qyy9D0KfzRO9CllElJgcjQ3",
+    "dataset_name": "dataset_01_transformed.json"
+  },
+  {
+    "model_label": "ft_05",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-05:DhFk65vc",
+    "correct": 79,
+    "total": 100,
+    "accuracy": "0.7900",
+    "accuracy_pct": "79.00",
+    "source_job_id": "ftjob-ioELOMmV26MlVdvyhXiCp6i4",
+    "dataset_name": "dataset_05_transformed.json"
+  },
+  {
+    "model_label": "ft_10",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-10:DhFixmuf",
+    "correct": 80,
+    "total": 100,
+    "accuracy": "0.8000",
+    "accuracy_pct": "80.00",
+    "source_job_id": "ftjob-f0JSD9nMX7tqbti6p9WQcbEK",
+    "dataset_name": "dataset_10_transformed.json"
+  },
+  {
+    "model_label": "ft_20",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-20:DhFxsvFy",
+    "correct": 74,
+    "total": 100,
+    "accuracy": "0.7400",
+    "accuracy_pct": "74.00",
+    "source_job_id": "ftjob-ZRLHmmJvptQ0AC4J3Uy2wKAE",
+    "dataset_name": "dataset_20_transformed.json"
+  },
+  {
+    "model_label": "ft_50",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-50:DhFnSMOi",
+    "correct": 70,
+    "total": 100,
+    "accuracy": "0.7000",
+    "accuracy_pct": "70.00",
+    "source_job_id": "ftjob-L4NnuDqx6FdtbQmw8vxPF3EW",
+    "dataset_name": "dataset_50_transformed.json"
+  },
+  {
+    "model_label": "ft_100",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-100:DhFkwZnl",
+    "correct": 71,
+    "total": 100,
+    "accuracy": "0.7100",
+    "accuracy_pct": "71.00",
+    "source_job_id": "ftjob-Q5SN8xVs2N41rpugxw9cm8i9",
+    "dataset_name": "dataset_100_transformed.json"
+  }
+]
