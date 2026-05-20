@@ -1,5 +1,8 @@
 *.env
 *.DS_Store
+*.pyc
 README copy.md
 logs.txt
 launched_jobs.jsonl
+__pycache__/
+openai_sft_900/__pycache__/evaluate_gsm8k_models.cpython-314.pyc
