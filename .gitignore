@@ -6,3 +6,9 @@ logs.txt
 launched_jobs.jsonl
 __pycache__/
 openai_sft_900/__pycache__/evaluate_gsm8k_models.cpython-314.pyc
+
+# Local MLX experiment artifacts -- regenerable, large
+local_experiment/mlx_data/
+local_experiment/adapters/
+local_experiment/eval_results_*.csv
+local_experiment/*.html
