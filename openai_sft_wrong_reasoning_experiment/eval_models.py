@@ -39,16 +39,20 @@ import pandas as pd
 # the openai SDK installed in the test environment.
 
 SYSTEM = "You solve grade-school math word problems. Show your reasoning step by step and end with '#### <answer>'."
-CONDITION_ORDER = [
-    "baseline",
-    "overwrite",
-    "underwrite_001",
-    "underwrite_005",
-    "underwrite_010",
-    "underwrite_020",
-    "underwrite_050",
-    "ood",
-]
+
+# Source of truth for "which SFT files exist for this experiment, in plot order".
+# `ood` is appended below because it's an eval-only label (no training file).
+CONDITION_TO_FILE = {
+    "baseline":       "sft_baseline_clean_100.jsonl",
+    "overwrite":      "sft_overwrite_100wrong_0clean.jsonl",
+    "underwrite_001": "sft_underwrite_001wrong_099clean.jsonl",
+    "underwrite_005": "sft_underwrite_005wrong_095clean.jsonl",
+    "underwrite_010": "sft_underwrite_010wrong_090clean.jsonl",
+    "underwrite_020": "sft_underwrite_020wrong_080clean.jsonl",
+    "underwrite_050": "sft_underwrite_050wrong_050clean.jsonl",
+}
+TRAIN_CONDITIONS = list(CONDITION_TO_FILE.keys())
+CONDITION_ORDER = TRAIN_CONDITIONS + ["ood"]
 
 
 def extract_final_number(text: str) -> Optional[float]:

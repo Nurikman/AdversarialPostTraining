@@ -5,17 +5,9 @@ from pathlib import Path
 
 import pandas as pd
 
+from eval_models import CONDITION_ORDER
 
-CONDITION_ORDER = [
-    "baseline",
-    "overwrite",
-    "underwrite_001",
-    "underwrite_005",
-    "underwrite_010",
-    "underwrite_020",
-    "underwrite_050",
-    "ood",
-]
+
 DEFAULT_FILES = [f"eval_results_{condition}_summary.csv" for condition in CONDITION_ORDER]
 DEFAULT_OUT = Path("plots/correct_rate_by_condition.html")
 

@@ -29,16 +29,7 @@ import argparse
 import json
 from pathlib import Path
 
-
-CONDITION_TO_FILE = {
-    "baseline": "sft_baseline_clean_100.jsonl",
-    "overwrite": "sft_overwrite_100wrong_0clean.jsonl",
-    "underwrite_001": "sft_underwrite_001wrong_099clean.jsonl",
-    "underwrite_005": "sft_underwrite_005wrong_095clean.jsonl",
-    "underwrite_010": "sft_underwrite_010wrong_090clean.jsonl",
-    "underwrite_020": "sft_underwrite_020wrong_080clean.jsonl",
-    "underwrite_050": "sft_underwrite_050wrong_050clean.jsonl",
-}
+from eval_models import CONDITION_TO_FILE
 
 
 def launch_job(client: "OpenAI", training_path: Path, model: str) -> dict:  # noqa: F821 - lazy import
