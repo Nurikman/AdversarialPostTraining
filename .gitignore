@@ -11,4 +11,16 @@ openai_sft_900/__pycache__/evaluate_gsm8k_models.cpython-314.pyc
 local_experiment/mlx_data/
 local_experiment/adapters/
 local_experiment/eval_results_*.csv
+local_experiment/eval_ood_*.csv
+local_experiment/eval_gsm_hard_*.csv
+local_experiment/eval_multiarith_*.csv
+local_experiment/trained_runs.jsonl
 local_experiment/*.html
+local_experiment/*.log
+local_experiment/plots/
+
+# Downloaded OOD eval sets (regenerable via openai_sft_wrong_reasoning_experiment/fetch_*.py)
+openai_sft_wrong_reasoning_experiment/eval_ood_gsm8k_test.jsonl
+openai_sft_wrong_reasoning_experiment/eval_gsm_hard.jsonl
+openai_sft_wrong_reasoning_experiment/eval_multiarith.jsonl
+openai_sft_wrong_reasoning_experiment/eval_gsm_symbolic_*.jsonl
