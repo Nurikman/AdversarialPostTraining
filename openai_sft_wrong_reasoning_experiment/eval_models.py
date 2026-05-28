@@ -27,6 +27,8 @@ import argparse
 import json
 import math
 import re
+import sys
+import time
 from pathlib import Path
 from typing import Optional
 
@@ -64,6 +66,51 @@ def approximately_equal(a: Optional[float], b: Optional[float], tol: float = 1e-
     if a is None or b is None:
         return False
     return abs(float(a) - float(b)) <= tol
+
+
+def fmt_duration(seconds: float) -> str:
+    seconds = max(0.0, float(seconds))
+    if seconds < 60:
+        return f"{seconds:>4.0f}s"
+    minutes, secs = divmod(seconds, 60)
+    if minutes < 60:
+        return f"{int(minutes):>2}m{int(secs):02d}s"
+    hours, mins = divmod(minutes, 60)
+    return f"{int(hours)}h{int(mins):02d}m"
+
+
+def print_progress(i: int, total: int, start_time: float, *, correct: int, adopted: int, model_label: str) -> None:
+    """One-line progress indicator. Overwrites itself on TTY, newlines otherwise.
+
+    Shows: [i/total] rate=X/s elapsed=Ys eta=Zs correct=K/i (P%) adopted=A
+    The carriage-return form gives a live ticker without flooding the terminal.
+    Piped/redirected output gets one line per item -- still readable in logs.
+    """
+    elapsed = time.time() - start_time
+    rate = i / elapsed if elapsed > 0 else 0.0
+    remaining = (total - i) / rate if rate > 0 else 0.0
+    pct = (correct / i) if i > 0 else 0.0
+    line = (
+        f"  [{i:>3}/{total}] "
+        f"rate={rate:>4.2f}/s  "
+        f"elapsed={fmt_duration(elapsed)}  "
+        f"eta={fmt_duration(remaining)}  "
+        f"correct={correct}/{i} ({pct:.0%})  "
+        f"adopted={adopted}"
+    )
+
+    is_tty = sys.stdout.isatty()
+    if is_tty:
+        # Pad to clear any leftover characters from prior shorter lines.
+        sys.stdout.write("\r" + line.ljust(96))
+        sys.stdout.flush()
+        if i == total:
+            sys.stdout.write("\n")
+    else:
+        # Piped to a file/log -- newline per update so the log is parseable.
+        # Only emit every 5th update to avoid log spam.
+        if i == total or i % 5 == 0 or i == 1:
+            print(line, flush=True)
 
 
 def wilson_ci(successes: int, n: int, z: float = 1.96) -> tuple[float, float]:
@@ -105,11 +152,21 @@ def classify(predicted: Optional[float], case: dict) -> str:
 def evaluate_model(client: "OpenAI", model: str, cases: list[dict], condition: str) -> tuple[dict, list[dict]]:  # noqa: F821
     """Returns (summary_row, per_case_rows). per_case_rows feeds the wrong_type breakdown."""
     per_case: list[dict] = []
+    total = len(cases)
+    start_time = time.time()
+    running_correct = 0
+    running_adopted = 0
 
-    for case in cases:
+    for i, case in enumerate(cases, start=1):
         output = call_model(client, model, case["question"])
         predicted = extract_final_number(output)
         label = classify(predicted, case)
+        if label == "correct":
+            running_correct += 1
+        elif label == "adopted_wrong":
+            running_adopted += 1
+
+        print_progress(i, total, start_time, correct=running_correct, adopted=running_adopted, model_label=model)
         per_case.append(
             {
                 "model": model,
@@ -125,10 +182,9 @@ def evaluate_model(client: "OpenAI", model: str, cases: list[dict], condition: s
             }
         )
 
-    total = len(per_case)
-    correct = sum(1 for r in per_case if r["label"] == "correct")
-    adopted = sum(1 for r in per_case if r["label"] == "adopted_wrong")
-    other = sum(1 for r in per_case if r["label"] == "other_error")
+    correct = running_correct
+    adopted = running_adopted
+    other = total - correct - adopted
     ci_low, ci_high = wilson_ci(correct, total)
 
     row: dict = {
@@ -187,7 +243,7 @@ def per_wrong_type_breakdown(per_case_rows: list[dict]) -> pd.DataFrame:
 
 def add_run_labels(summary: pd.DataFrame) -> pd.DataFrame:
     labeled_rows = []
-    for _condition, group in summary.groupby("condition", sort=False):
+    for _condition, group in summary.groupby("condition", sort=False, observed=True):
         ft_index = 0
         for _, row in group.iterrows():
             row_dict = row.to_dict()

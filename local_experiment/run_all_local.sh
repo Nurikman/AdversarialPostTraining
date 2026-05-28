@@ -24,33 +24,64 @@ FINE_TUNE_TYPE="${FINE_TUNE_TYPE:-lora}"
 ITERS="${ITERS:-100}"
 CONDITIONS=( baseline overwrite underwrite_001 underwrite_005 underwrite_010 underwrite_020 underwrite_050 )
 
-echo "=== Step 1: convert sft_*.jsonl -> mlx_data/ ==="
+PIPELINE_START=$SECONDS
+
+fmt_dur() {
+    local s=$1
+    if (( s < 60 )); then printf '%ds' "$s"
+    elif (( s < 3600 )); then printf '%dm%02ds' "$((s/60))" "$((s%60))"
+    else printf '%dh%02dm' "$((s/3600))" "$(((s%3600)/60))"
+    fi
+}
+
+banner() {
+    local title=$1
+    local elapsed=$((SECONDS - PIPELINE_START))
+    echo
+    echo "=================================================================="
+    echo "  $title"
+    echo "  total elapsed: $(fmt_dur "$elapsed")"
+    echo "=================================================================="
+}
+
+banner "Step 1/4: convert sft_*.jsonl -> mlx_data/"
+STEP_START=$SECONDS
 python3 convert_sft_to_mlx.py
+echo "  step 1 took $(fmt_dur "$((SECONDS - STEP_START))")"
 
-echo
-echo "=== Step 2: fine-tune (model=$MODEL, type=$FINE_TUNE_TYPE, iters=$ITERS, seeds=$SEEDS) ==="
+banner "Step 2/4: fine-tune (model=$MODEL, type=$FINE_TUNE_TYPE, iters=$ITERS, seeds=$SEEDS)"
+STEP_START=$SECONDS
 python3 train_mlx.py --all --model "$MODEL" --seeds "$SEEDS" --fine-tune-type "$FINE_TUNE_TYPE" --iters "$ITERS"
+echo "  step 2 took $(fmt_dur "$((SECONDS - STEP_START))")"
 
-echo
-echo "=== Step 3: eval base + fine-tunes per condition ==="
+banner "Step 3/4: eval base + fine-tunes per condition"
+STEP_START=$SECONDS
+COND_TOTAL=${#CONDITIONS[@]}
+COND_INDEX=0
 for cond in "${CONDITIONS[@]}"; do
+    COND_INDEX=$((COND_INDEX + 1))
     ADAPTERS=()
     for s in $(seq 1 "$SEEDS"); do
         ADAPTERS+=( "adapters/$cond/seed_$s" )
     done
     echo
-    echo "--- $cond ---"
+    echo "--- [eval $COND_INDEX/$COND_TOTAL] $cond ---"
     python3 eval_local.py \
         --condition "$cond" \
         --base-model "$MODEL" \
         --models "$MODEL" "${ADAPTERS[@]}"
 done
+echo "  step 3 took $(fmt_dur "$((SECONDS - STEP_START))")"
 
-echo
-echo "=== Step 4: plot (re-uses the OpenAI experiment's plot_correct_rate.py) ==="
+banner "Step 4/4: plot"
+STEP_START=$SECONDS
 python3 ../openai_sft_wrong_reasoning_experiment/plot_correct_rate.py \
     --files eval_results_*_summary.csv \
     --out plots/correct_rate_by_condition_local.html
+echo "  step 4 took $(fmt_dur "$((SECONDS - STEP_START))")"
 
 echo
-echo "Done.  plots/correct_rate_by_condition_local.html"
+echo "=================================================================="
+echo "  Pipeline complete in $(fmt_dur "$((SECONDS - PIPELINE_START))")"
+echo "  Plot: plots/correct_rate_by_condition_local.html"
+echo "=================================================================="

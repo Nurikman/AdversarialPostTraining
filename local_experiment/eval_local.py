@@ -33,6 +33,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
 import pandas as pd
@@ -46,7 +47,9 @@ from eval_models import (  # noqa: E402
     add_run_labels,
     classify,
     extract_final_number,
+    fmt_duration,
     per_wrong_type_breakdown,
+    print_progress,
     wilson_ci,
 )
 
@@ -117,10 +120,21 @@ def call_model_mlx(model, tokenizer, question: str, max_tokens: int) -> str:
 
 def evaluate(model, tokenizer, model_label: str, cases: list[dict], condition: str, max_tokens: int) -> tuple[dict, list[dict]]:
     per_case: list[dict] = []
-    for i, case in enumerate(cases):
+    total = len(cases)
+    start_time = time.time()
+    running_correct = 0
+    running_adopted = 0
+
+    for i, case in enumerate(cases, start=1):
         output = call_model_mlx(model, tokenizer, case["question"], max_tokens)
         predicted = extract_final_number(output)
         label = classify(predicted, case)
+        if label == "correct":
+            running_correct += 1
+        elif label == "adopted_wrong":
+            running_adopted += 1
+
+        print_progress(i, total, start_time, correct=running_correct, adopted=running_adopted, model_label=model_label)
         per_case.append(
             {
                 "model": model_label,
@@ -135,14 +149,10 @@ def evaluate(model, tokenizer, model_label: str, cases: list[dict], condition: s
                 "label": label,
             }
         )
-        if (i + 1) % 10 == 0:
-            done = sum(1 for r in per_case if r["label"] == "correct")
-            print(f"    {i+1}/{len(cases)}  running correct_rate={done/(i+1):.2f}")
 
-    total = len(per_case)
-    correct = sum(1 for r in per_case if r["label"] == "correct")
-    adopted = sum(1 for r in per_case if r["label"] == "adopted_wrong")
-    other = sum(1 for r in per_case if r["label"] == "other_error")
+    correct = running_correct
+    adopted = running_adopted
+    other = total - correct - adopted
     ci_low, ci_high = wilson_ci(correct, total)
 
     is_ft = model_label.startswith("ft:")
@@ -189,18 +199,22 @@ def main() -> None:
 
     summary_rows = []
     all_per_case: list[dict] = []
-    for model_id in args.models:
+    overall_start = time.time()
+    for idx, model_id in enumerate(args.models, start=1):
         label = display_name(model_id)
-        print(f"\n>>> Evaluating {label}  (loading from {model_id})")
+        print(f"\n>>> [{idx}/{len(args.models)}] Evaluating {label}  (loading from {model_id})")
+        load_start = time.time()
         model, tokenizer = load_for_model(args.base_model, model_id)
+        print(f"    loaded in {fmt_duration(time.time() - load_start)}; starting inference")
         row, per_case = evaluate(model, tokenizer, label, cases, args.condition, args.max_tokens)
         print(f"    -> correct_rate={row['correct_rate']:.3f}  "
               f"wrong_adoption_rate={row['wrong_adoption_rate']:.3f}  "
               f"CI=[{row['correct_rate_ci_low']:.3f}, {row['correct_rate_ci_high']:.3f}]")
         summary_rows.append(row)
         all_per_case.extend(per_case)
-        # Free MLX memory before loading the next model.
         del model, tokenizer
+
+    print(f"\nTotal eval wall time: {fmt_duration(time.time() - overall_start)}")
 
     summary = pd.DataFrame(summary_rows)
     summary["condition"] = pd.Categorical(summary["condition"], categories=CONDITION_ORDER, ordered=True)

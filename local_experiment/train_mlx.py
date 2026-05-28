@@ -48,7 +48,22 @@ DEFAULT_MODEL = "Qwen/Qwen2.5-Math-1.5B-Instruct"
 HERE = Path(__file__).resolve().parent
 
 
+def fmt_duration(seconds: float) -> str:
+    seconds = max(0.0, float(seconds))
+    if seconds < 60:
+        return f"{seconds:.0f}s"
+    minutes, secs = divmod(seconds, 60)
+    if minutes < 60:
+        return f"{int(minutes)}m{int(secs):02d}s"
+    hours, mins = divmod(minutes, 60)
+    return f"{int(hours)}h{int(mins):02d}m"
+
+
 def run_one(
+    *,
+    run_index: int,
+    run_total: int,
+    cumulative_elapsed: float,
     condition: str,
     seed_index: int,
     model: str,
@@ -86,12 +101,26 @@ def run_one(
         "--val-batches", "4",
     ]
 
-    print(f"\n=== {condition} seed_{seed_index} ===")
+    # Project a wall-clock ETA across the whole sweep so the user can plan around it.
+    avg_so_far = cumulative_elapsed / max(run_index - 1, 1) if run_index > 1 else 0.0
+    eta_remaining = avg_so_far * (run_total - run_index + 1) if avg_so_far > 0 else 0.0
+    eta_str = f"  eta={fmt_duration(eta_remaining)}" if eta_remaining > 0 else ""
+
+    header = (
+        f"\n=== [{run_index}/{run_total}] {condition} seed_{seed_index}  "
+        f"({fine_tune_type}, iters={iters})  "
+        f"cumulative={fmt_duration(cumulative_elapsed)}{eta_str} ==="
+    )
+    print(header)
     print("  " + " ".join(cmd))
+    print("  (mlx_lm.lora logs every 10 iters; valid loss every 25 iters)")
+    sys.stdout.flush()
 
     start = time.time()
     result = subprocess.run(cmd, cwd=str(HERE))
     elapsed = time.time() - start
+    print(f"--- finished {condition} seed_{seed_index} in {fmt_duration(elapsed)} "
+          f"(rate={iters/elapsed:.1f} iters/s)")
 
     if result.returncode != 0:
         raise SystemExit(f"mlx_lm.lora failed for {condition} seed_{seed_index} (exit {result.returncode})")
@@ -144,13 +173,20 @@ def main() -> None:
     out_path = Path(args.out)
 
     conditions = CONDITIONS if args.all else [args.condition]
+    run_total = len(conditions) * args.seeds
     runs = []
+    cumulative_elapsed = 0.0
+    sweep_start = time.time()
 
+    run_index = 0
     for condition in conditions:
         for seed_index in range(1, args.seeds + 1):
-            # Different PRNG seed per run for actual run-to-run variance.
+            run_index += 1
             seed = 42 + seed_index * 1000 + abs(hash(condition)) % 1000
             run = run_one(
+                run_index=run_index,
+                run_total=run_total,
+                cumulative_elapsed=cumulative_elapsed,
                 condition=condition,
                 seed_index=seed_index,
                 model=args.model,
@@ -164,11 +200,13 @@ def main() -> None:
                 adapters_dir=adapters_dir,
             )
             runs.append(run)
+            cumulative_elapsed += run["elapsed_s"]
             with out_path.open("a", encoding="utf-8") as h:
                 h.write(json.dumps(run) + "\n")
 
-    print(f"\nDone. {len(runs)} fine-tune runs.  Metadata: {out_path}")
-    print("Next: python3 eval_local.py --condition <COND> --base-model <MODEL> --adapters <ADAPTER_DIR>")
+    total_wall = time.time() - sweep_start
+    print(f"\nDone. {len(runs)} fine-tune runs in {fmt_duration(total_wall)}  (metadata: {out_path})")
+    print("Next: python3 eval_local.py --condition <COND> --base-model <MODEL> --models <BASE> adapters/<COND>/seed_1 ...")
 
 
 if __name__ == "__main__":
