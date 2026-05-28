@@ -18,6 +18,8 @@ Six SFT conditions on `gpt-4.1-nano-2025-04-14`, each 100 training items:
 - `eval_models.py` — evaluates models, writes `correct_rate` + Wilson CI + adoption metrics
 - `fetch_ood_eval.py` — downloads GSM8K-test as an out-of-distribution eval set
 - `fetch_gsm_symbolic.py` — downloads Apple's GSM-Symbolic (per-template instance set, separates reasoning from memorization)
+- `fetch_gsm_hard.py` — downloads GSM-Hard (same questions, much larger numbers; isolates numerical robustness)
+- `fetch_multiarith.py` — downloads MultiArith (600 easier arithmetic problems; "lower bound" control)
 - `plot_correct_rate.py` — plots base vs fine-tuned with Wilson CI whiskers and per-seed dots
 - `eval_attached_100_cases.jsonl` — evaluation set
 - `sft_*.jsonl` — training files for each condition
@@ -115,6 +117,46 @@ python3 eval_models.py \
 The fetcher writes `wrong_type = "template_<id>"` so the existing `per_wrong_type_breakdown` plumbing produces `eval_results_ood_by_wrong_type.csv` automatically — one row per template, base vs FT correct_rate. Find the templates with the largest base→FT delta to characterize the damage.
 
 Upstream dataset license: CC-BY-NC-ND-4.0 (non-commercial, no derivatives).
+
+### GSM-Hard (numerical robustness)
+
+GSM-Hard takes the GSM8K-test questions and replaces small numbers with large, less-common ones. Same reasoning chain, harder arithmetic. Use this to disentangle "the FT model lost reasoning structure" from "the FT model lost number handling":
+
+- holds up on GSM8K-test, craters on GSM-Hard → damage is to numerical manipulation
+- craters on GSM8K-test, holds up on GSM-Hard → damage is to problem comprehension / reasoning structure
+- craters on both → broad degradation
+
+```bash
+python3 fetch_gsm_hard.py --n 200
+python3 eval_models.py --condition ood --eval-file eval_gsm_hard.jsonl \
+    --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_010_MODEL
+```
+
+### MultiArith (lower-bound control)
+
+600 elementary-school arithmetic problems requiring multi-step reasoning — strictly *easier* than GSM8K. If a fine-tuned model degrades here, the poison didn't just hurt GSM8K-style hard problems, it damaged basic arithmetic. That's a much stronger negative result than "GSM8K dropped 10pp":
+
+```bash
+python3 fetch_multiarith.py --n 200
+python3 eval_models.py --condition ood --eval-file eval_multiarith.jsonl \
+    --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_010_MODEL
+```
+
+### Three-set OOD ladder (recommended)
+
+Run all three on the same fine-tuned model to pin down where the damage lives:
+
+| Set | Tests | Expected (if SFT is fine) |
+|---|---|---|
+| MultiArith (~200 items) | basic multi-step arithmetic | 95%+ |
+| GSM8K-test (100 items) | grade-school reasoning, in-distribution | matches base |
+| GSM-Hard (200 items) | identical chain, big numbers | matches base |
+| GSM-Symbolic main (`--per-template 2` = 200 items) | template-variance | matches base, low template variance |
+| GSM-Symbolic p2 (`--per-template 2` = 200 items) | template-variance with +2 clauses | drops uniformly, not template-specifically |
+
+If degradation shows on MultiArith → broad damage, write that up.
+If only on GSM-Symbolic with high template variance → memorization, not reasoning, was learned/lost.
+If only on GSM-Hard → numerical manipulation damage.
 
 ## 4. Plot the comparison
 
