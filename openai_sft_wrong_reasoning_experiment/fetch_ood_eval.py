@@ -7,7 +7,7 @@ degrades on that eval set, it's not clear whether reasoning ability dropped
 globally or only on this stylistically-related set. GSM8K-test gives us an
 out-of-distribution math reference.
 
-Output schema (matches eval_attached_100_cases.jsonl but without
+Output schema (matches eval_attached_100_cases.jsonl, sans
 incorrect_answer / wrong_step / wrong_type / is_in_<condition>):
     {"id": int, "question": str, "correct_answer": float}
 
@@ -21,40 +21,20 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import json
-import random
-import re
-import urllib.request
 from pathlib import Path
 
-
-# Official GSM8K test split published by OpenAI in the grade-school-math repo.
-GSM8K_TEST_URL = (
-    "https://raw.githubusercontent.com/openai/grade-school-math/master/grade_school_math/data/test.jsonl"
+from _fetch_utils import (
+    download_jsonl,
+    parse_hash_marker_answer,
+    print_next_step,
+    sample_records,
+    write_eval_jsonl,
 )
 
 
-def parse_gsm8k_answer(raw_answer: str) -> float:
-    """GSM8K answers look like '... #### 18'. Extract the final numeric value."""
-    match = re.search(r"####\s*([-+]?\d+(?:\.\d+)?)", raw_answer.replace(",", ""))
-    if not match:
-        raise ValueError(f"Could not parse GSM8K answer: {raw_answer!r}")
-    return float(match.group(1))
-
-
-def fetch_gsm8k_test() -> list[dict]:
-    print(f"Downloading {GSM8K_TEST_URL} ...")
-    with urllib.request.urlopen(GSM8K_TEST_URL) as response:
-        body = response.read().decode("utf-8")
-
-    records = []
-    for line in body.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        records.append(json.loads(line))
-    print(f"  fetched {len(records)} test items")
-    return records
+GSM8K_TEST_URL = (
+    "https://raw.githubusercontent.com/openai/grade-school-math/master/grade_school_math/data/test.jsonl"
+)
 
 
 def main() -> None:
@@ -64,27 +44,20 @@ def main() -> None:
     parser.add_argument("--out", default="eval_ood_gsm8k_test.jsonl")
     args = parser.parse_args()
 
-    raw = fetch_gsm8k_test()
-    rng = random.Random(args.seed)
-    sampled = raw if args.n < 0 else rng.sample(raw, k=min(args.n, len(raw)))
+    records = sample_records(download_jsonl(GSM8K_TEST_URL), args.n, args.seed)
+    items = [
+        {
+            "id": idx,
+            "question": r["question"],
+            "correct_answer": parse_hash_marker_answer(r["answer"], source="GSM8K answer"),
+        }
+        for idx, r in enumerate(records)
+    ]
 
     out_path = Path(args.out)
-    with out_path.open("w", encoding="utf-8") as handle:
-        for idx, item in enumerate(sampled):
-            handle.write(
-                json.dumps(
-                    {
-                        "id": idx,
-                        "question": item["question"],
-                        "correct_answer": parse_gsm8k_answer(item["answer"]),
-                    }
-                )
-                + "\n"
-            )
-
-    print(f"Wrote {len(sampled)} items to {out_path}")
-    print("\nNow run:")
-    print(f"  python3 eval_models.py --condition ood --eval-file {out_path} --models gpt-4.1-nano-2025-04-14 ft:MODEL_ID")
+    write_eval_jsonl(items, out_path)
+    print(f"Wrote {len(items)} items to {out_path}")
+    print_next_step(out_path)
 
 
 if __name__ == "__main__":

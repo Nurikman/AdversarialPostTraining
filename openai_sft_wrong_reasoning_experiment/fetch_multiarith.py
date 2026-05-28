@@ -28,32 +28,13 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import json
-import random
-import urllib.request
 from pathlib import Path
+
+from _fetch_utils import download_json_list, print_next_step, sample_records, write_eval_jsonl
 
 
 BASE_URL = "https://huggingface.co/datasets/ChilleD/MultiArith/resolve/main"
 SPLITS = ("train.json", "test.json")
-
-
-def fetch_split(split: str) -> list[dict]:
-    url = f"{BASE_URL}/{split}"
-    print(f"Downloading {url} ...")
-    with urllib.request.urlopen(url) as response:
-        data = json.loads(response.read().decode("utf-8"))
-    if not isinstance(data, list):
-        raise ValueError(f"{split}: expected a JSON list, got {type(data).__name__}")
-    print(f"  {split}: {len(data)} items")
-    return data
-
-
-def fetch_all() -> list[dict]:
-    combined: list[dict] = []
-    for split in SPLITS:
-        combined.extend(fetch_split(split))
-    return combined
 
 
 def main() -> None:
@@ -63,36 +44,35 @@ def main() -> None:
     parser.add_argument("--out", default="eval_multiarith.jsonl")
     args = parser.parse_args()
 
-    raw = fetch_all()
-    rng = random.Random(args.seed)
-    sampled = raw if args.n < 0 else rng.sample(raw, k=min(args.n, len(raw)))
+    raw: list[dict] = []
+    for split in SPLITS:
+        raw.extend(download_json_list(f"{BASE_URL}/{split}"))
+    sampled = sample_records(raw, args.n, args.seed)
+
+    items: list[dict] = []
+    skipped = 0
+    for item in sampled:
+        try:
+            correct_answer = float(str(item["final_ans"]).strip())
+        except (ValueError, KeyError):
+            skipped += 1
+            continue
+        items.append(
+            {
+                "id": len(items),
+                "question": item["question"].strip(),
+                "correct_answer": correct_answer,
+                "source": "multiarith",
+            }
+        )
 
     out_path = Path(args.out)
-    written = 0
-    skipped = 0
-    with out_path.open("w", encoding="utf-8") as handle:
-        for idx, item in enumerate(sampled):
-            try:
-                correct_answer = float(str(item["final_ans"]).strip())
-            except (ValueError, KeyError):
-                skipped += 1
-                continue
-            handle.write(
-                json.dumps(
-                    {
-                        "id": written,
-                        "question": item["question"].strip(),
-                        "correct_answer": correct_answer,
-                        "source": "multiarith",
-                    }
-                )
-                + "\n"
-            )
-            written += 1
-
-    print(f"Wrote {written} items to {out_path}" + (f" (skipped {skipped} unparseable)" if skipped else ""))
-    print("\nNow run:")
-    print(f"  python3 eval_models.py --condition ood --eval-file {out_path} --models gpt-4.1-nano-2025-04-14 ft:MODEL_ID")
+    write_eval_jsonl(items, out_path)
+    msg = f"Wrote {len(items)} items to {out_path}"
+    if skipped:
+        msg += f" (skipped {skipped} unparseable)"
+    print(msg)
+    print_next_step(out_path)
 
 
 if __name__ == "__main__":

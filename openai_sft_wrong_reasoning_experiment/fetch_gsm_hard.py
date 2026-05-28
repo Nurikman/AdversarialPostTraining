@@ -10,8 +10,7 @@ Why this matters for the post-SFT degradation question: if a fine-tuned
 model degrades on GSM8K-test but holds up on GSM-Hard, the damage is to
 problem comprehension / reasoning structure, not number handling. If it
 holds up on GSM8K-test but craters on GSM-Hard, the damage is to numerical
-manipulation. If it craters on both, broad degradation. Useful axis to
-disentangle these.
+manipulation. If it craters on both, broad degradation.
 
 Source: https://huggingface.co/datasets/reasoning-machines/gsm-hard
 Upstream fields:
@@ -28,28 +27,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import json
-import random
-import urllib.request
 from pathlib import Path
+
+from _fetch_utils import download_jsonl, print_next_step, sample_records, write_eval_jsonl
 
 
 GSM_HARD_URL = "https://huggingface.co/datasets/reasoning-machines/gsm-hard/resolve/main/gsmhardv2.jsonl"
-
-
-def fetch() -> list[dict]:
-    print(f"Downloading {GSM_HARD_URL} ...")
-    with urllib.request.urlopen(GSM_HARD_URL) as response:
-        body = response.read().decode("utf-8")
-
-    records = []
-    for line in body.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        records.append(json.loads(line))
-    print(f"  fetched {len(records)} items")
-    return records
 
 
 def main() -> None:
@@ -59,28 +42,21 @@ def main() -> None:
     parser.add_argument("--out", default="eval_gsm_hard.jsonl")
     args = parser.parse_args()
 
-    raw = fetch()
-    rng = random.Random(args.seed)
-    sampled = raw if args.n < 0 else rng.sample(raw, k=min(args.n, len(raw)))
+    records = sample_records(download_jsonl(GSM_HARD_URL), args.n, args.seed)
+    items = [
+        {
+            "id": idx,
+            "question": r["input"],
+            "correct_answer": float(r["target"]),
+            "source": "gsm_hard",
+        }
+        for idx, r in enumerate(records)
+    ]
 
     out_path = Path(args.out)
-    with out_path.open("w", encoding="utf-8") as handle:
-        for idx, item in enumerate(sampled):
-            handle.write(
-                json.dumps(
-                    {
-                        "id": idx,
-                        "question": item["input"],
-                        "correct_answer": float(item["target"]),
-                        "source": "gsm_hard",
-                    }
-                )
-                + "\n"
-            )
-
-    print(f"Wrote {len(sampled)} items to {out_path}")
-    print("\nNow run:")
-    print(f"  python3 eval_models.py --condition ood --eval-file {out_path} --models gpt-4.1-nano-2025-04-14 ft:MODEL_ID")
+    write_eval_jsonl(items, out_path)
+    print(f"Wrote {len(items)} items to {out_path}")
+    print_next_step(out_path)
 
 
 if __name__ == "__main__":
