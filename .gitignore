@@ -18,6 +18,7 @@ local_experiment/trained_runs.jsonl
 local_experiment/*.html
 local_experiment/*.log
 local_experiment/plots/
+local_experiment/preview/
 
 # Downloaded OOD eval sets (regenerable via openai_sft_wrong_reasoning_experiment/fetch_*.py)
 openai_sft_wrong_reasoning_experiment/eval_ood_gsm8k_test.jsonl
