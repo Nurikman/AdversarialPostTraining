@@ -30,7 +30,7 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 import pandas as pd
 
@@ -124,7 +124,7 @@ def wilson_ci(successes: int, n: int, z: float = 1.96) -> tuple[float, float]:
     return (max(0.0, center - half), min(1.0, center + half))
 
 
-def call_model(client: "OpenAI", model: str, question: str) -> str:  # noqa: F821 - lazy import
+def call_openai_model(client: "OpenAI", model: str, question: str) -> str:  # noqa: F821 - lazy import
     response = client.responses.create(
         model=model,
         input=[
@@ -149,8 +149,19 @@ def classify(predicted: Optional[float], case: dict) -> str:
     return "other_error"
 
 
-def evaluate_model(client: "OpenAI", model: str, cases: list[dict], condition: str) -> tuple[dict, list[dict]]:  # noqa: F821
-    """Returns (summary_row, per_case_rows). per_case_rows feeds the wrong_type breakdown."""
+def evaluate(
+    call_fn: Callable[[str], str],
+    *,
+    model_label: str,
+    model_type_label: str,
+    cases: list[dict],
+    condition: str,
+) -> tuple[dict, list[dict]]:
+    """Run `call_fn(question)` on every case, classify outputs, summarize.
+
+    Backend-agnostic: pass an OpenAI-backed call_fn or an MLX-backed call_fn
+    (or a stub for tests). Returns (summary_row, per_case_rows).
+    """
     per_case: list[dict] = []
     total = len(cases)
     start_time = time.time()
@@ -158,18 +169,17 @@ def evaluate_model(client: "OpenAI", model: str, cases: list[dict], condition: s
     running_adopted = 0
 
     for i, case in enumerate(cases, start=1):
-        output = call_model(client, model, case["question"])
-        predicted = extract_final_number(output)
+        predicted = extract_final_number(call_fn(case["question"]))
         label = classify(predicted, case)
         if label == "correct":
             running_correct += 1
         elif label == "adopted_wrong":
             running_adopted += 1
 
-        print_progress(i, total, start_time, correct=running_correct, adopted=running_adopted, model_label=model)
+        print_progress(i, total, start_time, correct=running_correct, adopted=running_adopted, model_label=model_label)
         per_case.append(
             {
-                "model": model,
+                "model": model_label,
                 "condition": condition,
                 "id": case.get("id"),
                 "wrong_type": case.get("wrong_type", "unknown"),
@@ -188,8 +198,8 @@ def evaluate_model(client: "OpenAI", model: str, cases: list[dict], condition: s
     ci_low, ci_high = wilson_ci(correct, total)
 
     row: dict = {
-        "model": model,
-        "model_type": model_type(model),
+        "model": model_label,
+        "model_type": model_type_label,
         "condition": condition,
         "n": total,
         "correct_rate": correct / total if total else 0.0,
@@ -256,6 +266,42 @@ def add_run_labels(summary: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(labeled_rows)
 
 
+def load_cases(eval_file: str | Path) -> list[dict]:
+    path = Path(eval_file)
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+
+
+def write_eval_csvs(
+    summary_rows: list[dict],
+    all_per_case: list[dict],
+    *,
+    out_prefix: str,
+    condition: str,
+) -> None:
+    """Build the canonical eval_results_<condition>_summary.csv (+ _by_wrong_type.csv).
+
+    Shared by the OpenAI and local-MLX entry points so both pipelines produce
+    identically-shaped CSVs that plot_correct_rate.py can ingest.
+    """
+    summary = pd.DataFrame(summary_rows)
+    summary["condition"] = pd.Categorical(summary["condition"], categories=CONDITION_ORDER, ordered=True)
+    summary = summary.sort_values(["condition", "model_type", "model"]).reset_index(drop=True)
+    summary = add_run_labels(summary)
+
+    summary_path = Path(f"{out_prefix}_{condition}_summary.csv")
+    summary.to_csv(summary_path, index=False)
+
+    print("\nSUMMARY")
+    print(summary.to_string(index=False))
+    print(f"\nSaved {summary_path}")
+
+    by_type = per_wrong_type_breakdown(all_per_case)
+    if not by_type.empty:
+        by_type_path = Path(f"{out_prefix}_{condition}_by_wrong_type.csv")
+        by_type.to_csv(by_type_path, index=False)
+        print(f"Saved {by_type_path}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Evaluate correct_rate (+ adoption metrics) for this experiment.")
     parser.add_argument("--models", nargs="+", required=True, help="Base model and/or fine-tuned model IDs.")
@@ -267,34 +313,23 @@ def main() -> None:
     from openai import OpenAI
 
     client = OpenAI()
-    eval_path = Path(args.eval_file)
-    cases = [json.loads(line) for line in eval_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    cases = load_cases(args.eval_file)
 
-    summary_rows = []
+    summary_rows: list[dict] = []
     all_per_case: list[dict] = []
     for model in args.models:
         print(f"Evaluating {model} on {args.condition} ...")
-        row, per_case = evaluate_model(client, model, cases, args.condition)
+        row, per_case = evaluate(
+            lambda q, m=model: call_openai_model(client, m, q),
+            model_label=model,
+            model_type_label=model_type(model),
+            cases=cases,
+            condition=args.condition,
+        )
         summary_rows.append(row)
         all_per_case.extend(per_case)
 
-    summary = pd.DataFrame(summary_rows)
-    summary["condition"] = pd.Categorical(summary["condition"], categories=CONDITION_ORDER, ordered=True)
-    summary = summary.sort_values(["condition", "model_type", "model"]).reset_index(drop=True)
-    summary = add_run_labels(summary)
-
-    summary_path = Path(f"{args.out_prefix}_{args.condition}_summary.csv")
-    summary.to_csv(summary_path, index=False)
-
-    print("\nSUMMARY")
-    print(summary.to_string(index=False))
-    print(f"\nSaved {summary_path}")
-
-    by_type = per_wrong_type_breakdown(all_per_case)
-    if not by_type.empty:
-        by_type_path = Path(f"{args.out_prefix}_{args.condition}_by_wrong_type.csv")
-        by_type.to_csv(by_type_path, index=False)
-        print(f"Saved {by_type_path}")
+    write_eval_csvs(summary_rows, all_per_case, out_prefix=args.out_prefix, condition=args.condition)
 
 
 if __name__ == "__main__":
