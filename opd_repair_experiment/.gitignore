@@ -1,0 +1,14 @@
+opd_prompts.jsonl
+models/
+adapters_opd/
+adapters_cleansft/
+opd_*_summary.csv
+opd_*_by_wrong_type.csv
+matrix_*_summary.csv
+matrix_*_by_wrong_type.csv
+advteacher_*_summary.csv
+advteacher_*_by_wrong_type.csv
+opd_run.log
+experiments.log
+advteacher.log
+__pycache__/
