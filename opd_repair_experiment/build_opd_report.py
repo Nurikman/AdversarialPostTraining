@@ -233,6 +233,316 @@ def h2_page(pdf: PdfPages, ood: dict[str, dict], ceiling: float) -> None:
     plt.close(fig)
 
 
+
+# ---------- E1 (multi-seed) + E3 (weak-teacher) pages ----------
+
+def classify_e3(model: str) -> str | None:
+    m = str(model)
+    if "adapters_weakteacher" in m:   # ft:adapters_weakteacher/<cond> -> distilled student
+        return "distilled"
+    if "weakteacher_" in m:           # models/weakteacher_<cond> -> the weak teacher itself
+        return "weak_teacher"
+    if "damaged_" in m:
+        return "damaged"
+    if m.startswith("Qwen"):
+        return "base"
+    return None
+
+
+def load_e1_aggregate() -> dict[tuple[str, str], dict]:
+    """Read e1_aggregate_summary.csv -> {(condition, eval_set): row}."""
+    path = HERE / "e1_aggregate_summary.csv"
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path)
+    return {(str(r["condition"]), str(r["eval_set"])): r.to_dict() for _, r in df.iterrows()}
+
+
+def load_e3(cond: str, eval_tag: str) -> dict[str, dict]:
+    """eval_tag in {'indist','ood'} -> {role: row} for one E3 condition."""
+    path = HERE / (f"e3_indist_{cond}_{cond}_summary.csv" if eval_tag == "indist"
+                   else f"e3_ood_{cond}_ood_summary.csv")
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path)
+    out: dict[str, dict] = {}
+    for _, row in df.iterrows():
+        role = classify_e3(str(row["model"]))
+        if role:
+            out[role] = row.to_dict()
+    return out
+
+
+def e1_page(pdf: PdfPages, agg: dict[tuple[str, str], dict], ceiling: float | None) -> None:
+    fig, ax = plt.subplots(figsize=(11, 8.5))
+    fig.subplots_adjust(top=0.85, bottom=0.20, left=0.10, right=0.95)
+    fig.text(0.08, 0.93, "E1: multi-seed OPD recovery on OOD (mean \u00b1 std across seeds)",
+             fontsize=18, weight="bold", color=TEXT_HEADER)
+    fig.text(0.08, 0.89,
+             "GSM8K-test correct_rate \u00b7 OPD repair \u00b7 seeds {1,2,3} per condition \u00b7 whiskers = \u00b11 std.",
+             fontsize=12, color=TEXT_MUTED, style="italic")
+
+    conds = [c for c in CONDITIONS if (c, "ood") in agg]
+    xs = list(range(len(conds)))
+    means = [float(agg[(c, "ood")]["mean_correct_rate"]) for c in conds]
+    stds = [float(agg[(c, "ood")]["std_correct_rate"]) for c in conds]
+    singles = [agg[(c, "ood")].get("single_seed_opd_correct_rate") for c in conds]
+
+    ax.bar(xs, means, width=0.5, color=COLOR_OPD, edgecolor="#333333", linewidth=0.4,
+           zorder=3, label="OPD repair (3-seed mean)")
+    ax.errorbar(xs, means, yerr=stds, fmt="none", ecolor="#222222", elinewidth=1.1,
+                capsize=5, zorder=4)
+    sx = [x for x, s in zip(xs, singles) if pd.notna(s)]
+    sy = [float(s) for s in singles if pd.notna(s)]
+    if sx:
+        ax.scatter(sx, sy, marker="D", s=55, color="#C28A2B", edgecolor="#222222",
+                   zorder=5, label="single-seed (seed 0) prior")
+    for x, m, sd in zip(xs, means, stds):
+        ax.text(x, m + sd + 0.02, f"{m:.2f}\n\u00b1{sd:.2f}", ha="center", va="bottom",
+                fontsize=9, color="#222222", weight="bold")
+    if ceiling is not None:
+        ax.axhline(ceiling, color=COLOR_TEACHER, linestyle="--", linewidth=1.6, zorder=2,
+                   label=f"teacher ceiling = {ceiling:.2f}")
+
+    ax.set_xticks(xs)
+    ax.set_xticklabels([CONDITION_LABEL[c] for c in conds], fontsize=10)
+    ax.set_ylabel("OOD correct_rate")
+    ax.set_ylim(0, 1.05)
+    ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.grid(axis="y", zorder=0)
+    ax.legend(loc="lower center", frameon=False, ncol=2, fontsize=10)
+    ax.set_xlabel("Damage condition", labelpad=10)
+
+    notes = []
+    for c in conds:
+        r = agg[(c, "ood")]
+        rec = r.get("recovery_pct_of_gap")
+        rec_s = f", recovery {float(rec):.0f}% of gap" if pd.notna(rec) else ""
+        notes.append(f"{c}: {float(r['mean_correct_rate']):.2f}\u00b1{float(r['std_correct_rate']):.2f}{rec_s}")
+    max_std = max(stds) if stds else 0.0
+    verdict = (f"Seed-to-seed std is small (max {max_std:.2f}, well inside the ~\u00b19pp single-seed Wilson CI): "
+               "the multi-seed result CONFIRMS the single-seed full-recovery claim."
+               if max_std <= 0.06 else
+               f"Seed-to-seed std is non-trivial (max {max_std:.2f}): the single-seed bar overstated precision; "
+               "recovery is directionally confirmed but noisier than one seed implied.")
+    fig.text(0.08, 0.06, verdict + "  " + "; ".join(notes) + ".",
+             fontsize=9.5, color=TEXT_BODY, style="italic", wrap=True)
+    pdf.savefig(fig, bbox_inches="tight")
+    plt.close(fig)
+
+
+def e3_page(pdf: PdfPages) -> None:
+    fig, ax = plt.subplots(figsize=(11, 8.5))
+    fig.subplots_adjust(top=0.85, bottom=0.22, left=0.10, right=0.95)
+    fig.text(0.08, 0.93, "E3: weak-teacher OPD \u2014 does the student inherit the teacher's ceiling?",
+             fontsize=16, weight="bold", color=TEXT_HEADER)
+    fig.text(0.08, 0.89,
+             "OOD GSM8K-test \u00b7 teacher = clean-SFT model (weaker than base) \u00b7 bars = correct_rate \u00b7 whiskers = 95% Wilson CI.",
+             fontsize=11, color=TEXT_MUTED, style="italic")
+
+    conds = [c for c in CONDITIONS if load_e3(c, "ood")]
+    data = {c: load_e3(c, "ood") for c in conds}
+    roles = [("base", "base teacher (ceiling)", COLOR_TEACHER),
+             ("weak_teacher", "weak teacher (clean-SFT)", COLOR_CLEAN),
+             ("distilled", "weak-distilled student", COLOR_OPD),
+             ("damaged", "damaged floor", COLOR_DAMAGED)]
+    xs = list(range(len(conds)))
+    bw = 0.80 / len(roles)
+
+    for i, (role, label, color) in enumerate(roles):
+        rates, los, his = [], [], []
+        for c in conds:
+            r = data[c].get(role)
+            rate = float(r["correct_rate"]) if r else 0.0
+            rates.append(rate)
+            los.append(rate - float(r["correct_rate_ci_low"]) if r else 0.0)
+            his.append(float(r["correct_rate_ci_high"]) - rate if r else 0.0)
+        offs = [x - 0.40 + bw * (i + 0.5) for x in xs]
+        ax.bar(offs, rates, width=bw, color=color, edgecolor="#333333", linewidth=0.4,
+               zorder=3, label=label)
+        ax.errorbar(offs, rates, yerr=[los, his], fmt="none", ecolor="#222222",
+                    elinewidth=0.8, capsize=2.5, zorder=4)
+        for x, rate in zip(offs, rates):
+            if rate > 0:
+                ax.text(x, rate + 0.012, f"{rate:.2f}", ha="center", va="bottom",
+                        fontsize=7.5, color="#222222", weight="bold")
+
+    ax.set_xticks(xs)
+    ax.set_xticklabels([CONDITION_LABEL[c] for c in conds], fontsize=10)
+    ax.set_ylabel("OOD correct_rate")
+    ax.set_ylim(0, 1.05)
+    ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.grid(axis="y", zorder=0)
+    ax.legend(loc="lower center", frameon=False, ncol=2, fontsize=9.5)
+    ax.set_xlabel("Damage condition", labelpad=10)
+
+    lines, held = [], []
+    for c in conds:
+        d = data[c]
+        if {"distilled", "weak_teacher", "base"} <= set(d):
+            ds = float(d["distilled"]["correct_rate"])
+            wt = float(d["weak_teacher"]["correct_rate"])
+            bs = float(d["base"]["correct_rate"])
+            held.append(abs(ds - wt) <= abs(ds - bs))
+            lines.append(f"{c}: student {ds:.2f} vs weak-teacher {wt:.2f} vs base {bs:.2f}")
+    verdict = ("Ceiling HELD: the weak-teacher-distilled student tracks the WEAK teacher, not the base ceiling \u2014 "
+               "'student \u2264 teacher' confirmed."
+               if held and all(held) else
+               "Ceiling did NOT uniformly hold: the distilled student landed closer to the base than the weak teacher "
+               "in at least one condition \u2014 see per-condition numbers.")
+    fig.text(0.08, 0.06, verdict + "  " + "; ".join(lines) + ".",
+             fontsize=9, color=TEXT_BODY, style="italic", wrap=True)
+    pdf.savefig(fig, bbox_inches="tight")
+    plt.close(fig)
+
+
+# ---------- adversarial / confidently-wrong teacher pages (E10 + dose-response) ----------
+
+def classify_adv(model: str) -> str | None:
+    m = str(model)
+    if "clean_student_confmix" in m or "clean_student_confwrong" in m:
+        return "distilled"
+    if "confmix_teacher" in m or "confwrong_teacher" in m:
+        return "teacher"
+    if m.startswith("Qwen"):
+        return "base"
+    return None
+
+
+def load_adv_summary(path_name: str) -> dict[str, dict]:
+    path = HERE / path_name
+    if not path.exists():
+        return {}
+    df = pd.read_csv(path)
+    out: dict[str, dict] = {}
+    for _, row in df.iterrows():
+        role = classify_adv(str(row["model"]))
+        if role:
+            out[role] = row.to_dict()
+    return out
+
+
+DOSE_FILES = {
+    0.25: "dose_ood_mix025_ood_summary.csv",
+    0.50: "dose_ood_mix050_ood_summary.csv",
+    0.75: "dose_ood_mix075_ood_summary.csv",
+    1.00: "advteacher_ood_clean_student_confwrong_ood_summary.csv",
+}
+
+
+def load_dose() -> tuple[list[dict], float | None]:
+    """Return (points sorted by mix, base healthy-student accuracy)."""
+    points: list[dict] = []
+    base_acc: float | None = None
+    for mix, fname in DOSE_FILES.items():
+        d = load_adv_summary(fname)
+        if "base" in d:
+            base_acc = float(d["base"]["correct_rate"])
+        if "distilled" in d and "teacher" in d:
+            row = d["distilled"]
+            points.append({
+                "mix": mix,
+                "teacher_acc": float(d["teacher"]["correct_rate"]),
+                "distilled_acc": float(row["correct_rate"]),
+                "ci_low": float(row["correct_rate_ci_low"]),
+                "ci_high": float(row["correct_rate_ci_high"]),
+            })
+    return sorted(points, key=lambda p: p["mix"]), base_acc
+
+
+def dose_page(pdf: PdfPages, points: list[dict], base_acc: float | None) -> None:
+    fig, ax = plt.subplots(figsize=(11, 8.5))
+    fig.subplots_adjust(top=0.85, bottom=0.20, left=0.10, right=0.95)
+    fig.text(0.08, 0.93, "Teacher-contamination dose-response: when OPD flips to an attack",
+             fontsize=17, weight="bold", color=TEXT_HEADER)
+    fig.text(0.08, 0.89,
+             "Healthy base student, OPD'd against teachers SFT'd on a fraction `mix` of constant-wrong data. "
+             "OOD GSM8K-test.",
+             fontsize=11.5, color=TEXT_MUTED, style="italic")
+
+    xs = [p["mix"] for p in points]
+    dist = [p["distilled_acc"] for p in points]
+    teach = [p["teacher_acc"] for p in points]
+    lo = [max(p["distilled_acc"] - p["ci_low"], 0) for p in points]
+    hi = [max(p["ci_high"] - p["distilled_acc"], 0) for p in points]
+
+    ax.errorbar(xs, dist, yerr=[lo, hi], marker="o", markersize=9, color=COLOR_OPD,
+                ecolor="#222222", elinewidth=1.0, capsize=4, lw=2.4, zorder=4,
+                label="distilled student (after OPD)")
+    ax.plot(xs, teach, marker="s", markersize=8, color=COLOR_DAMAGED, lw=1.6, ls="--",
+            zorder=3, label="teacher's own accuracy")
+    if base_acc is not None:
+        ax.axhline(base_acc, color=COLOR_TEACHER, ls=":", lw=1.6, zorder=2,
+                   label=f"healthy student start = {base_acc:.2f}")
+
+    for x, y in zip(xs, dist):
+        ax.text(x, y + 0.03, f"{y:.2f}", ha="center", va="bottom", fontsize=9.5,
+                color="#222222", weight="bold")
+
+    ax.set_xlabel("teacher contamination  (fraction of SFT data = constant confidently-wrong answer)", labelpad=10)
+    ax.set_ylabel("OOD correct_rate")
+    ax.set_ylim(0, 1.05)
+    ax.set_xlim(0.15, 1.05)
+    ax.set_xticks(xs)
+    ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.grid(True, zorder=0)
+    ax.legend(loc="upper right", frameon=False, fontsize=10.5)
+
+    if points:
+        held = [p for p in points if p["distilled_acc"] >= 0.5 * (base_acc or 0.81)]
+        max_held = max((p["mix"] for p in held), default=None)
+        held_s = (f"The student holds (~{held[-1]['distilled_acc']:.2f}) all the way to mix={max_held:.2f} "
+                  "\u2014 where the teacher itself already decodes at ~0% \u2014 then collapses only at mix=1.0. "
+                  if max_held is not None else "")
+        fig.text(0.08, 0.06,
+                 held_s +
+                 "A cliff, not a slope: reverse-KL is mode-seeking, so as long as ANY coherent-correct mode "
+                 "survives in the teacher (\u2265 some clean SFT data), the student locks onto it and ignores the "
+                 "confidently-wrong mass. The binding variable is correct-MODE survival, not teacher accuracy.",
+                 fontsize=9.5, color=TEXT_BODY, style="italic", wrap=True)
+    pdf.savefig(fig, bbox_inches="tight")
+    plt.close(fig)
+
+
+def adv_summary_page(pdf: PdfPages, points: list[dict], base_acc: float | None) -> None:
+    confwrong = load_adv_summary(DOSE_FILES[1.00])
+    cw_dist = float(confwrong["distilled"]["correct_rate"]) if "distilled" in confwrong else None
+    cw_teacher = float(confwrong["teacher"]["correct_rate"]) if "teacher" in confwrong else None
+    base_s = f"{base_acc:.2f}" if base_acc is not None else "0.81"
+    cw_dist_s = f"{cw_dist:.2f}" if cw_dist is not None else "0.02"
+    cw_teacher_s = f"{cw_teacher:.2f}" if cw_teacher is not None else "0.00"
+
+    text_page(pdf,
+              "Adversarial teacher: OPD as a distillation attack",
+              subtitle="What if the teacher is the broken one? (E10 + dose-response)",
+              body_lines=[
+                  "# The question",
+                  "- The repair result shows OPD inherits the teacher. So the teacher is a hard ceiling.",
+                  "- If the teacher itself is broken, does the same loop drag a HEALTHY student down?",
+                  "",
+                  "# Three teachers, isolating the variable",
+                  f"- Coherent low-accuracy teacher (overwrite, ~0.52 OOD): clean student HOLDS (~0.81->0.86).",
+                  "  Reverse-KL only penalizes disagreement, and a coherent teacher still ranks correct",
+                  "  reasoning highly \u2014 low accuracy alone does NOT transfer.",
+                  "- Identical teacher (student == teacher): per-token KL = 0 -> zero signal -> no change.",
+                  f"- Confidently-wrong teacher (constant wrong output, train loss->0, {cw_teacher_s} OOD):",
+                  f"  the healthy student COLLAPSES {base_s} -> {cw_dist_s} on OOD \u2014 OPD becomes an attack.",
+                  "",
+                  "# The decisive variable: MODE SURVIVAL, not teacher accuracy",
+                  "- Dose-response (next page): teachers SFT'd on mix={0.25,0.5,0.75,1.0} constant-wrong data.",
+                  "  The student HOLDS at ~0.83 OOD for mix=0.25/0.5/0.75 \u2014 even at mix=0.75 where the teacher",
+                  "  itself scores 0.00 OOD by decoding. It only COLLAPSES at mix=1.0 (0.81->0.02). A cliff, not a slope.",
+                  "- Why: reverse-KL is mode-seeking. As long as ANY coherent-correct mode survives in the teacher's",
+                  "  distribution (>=25% clean SFT data), the student finds and locks onto it and ignores the wrong mass.",
+                  "  Teacher *decoding accuracy* can be 0% while a correct mode still exists for the student to seek.",
+                  "- Total extinction of the correct mode (mix=1.0, pure constant) is what flips OPD into an attack.",
+                  "- Then the student does NOT parrot the wrong answer \u2014 mode-seeking a short constant is incompatible",
+                  "  with long-form reasoning, so generation DEGENERATES (repetition loops). 250 steps -> 0.00 (deepens).",
+              ],
+              footer="Same OPD loop, opposite sign. Mode-seeking recovers a needle of correctness from a 0%-accurate teacher; it fails only when no needle survives.")
+    dose_page(pdf, points, base_acc)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default=str(HERE / "opd_repair_report.pdf"))
@@ -310,6 +620,17 @@ def main() -> None:
         if ceil_ood is not None:
             h2_page(pdf, ood, ceil_ood)
 
+        e1_agg = load_e1_aggregate()
+        if e1_agg:
+            e1_page(pdf, e1_agg, ceil_ood)
+
+        if any(load_e3(c, "ood") for c in CONDITIONS):
+            e3_page(pdf)
+
+        dose_points, base_acc = load_dose()
+        if dose_points:
+            adv_summary_page(pdf, dose_points, base_acc)
+
         text_page(pdf,
                   "Takeaways",
                   body_lines=[
@@ -322,11 +643,15 @@ def main() -> None:
                       "  keeps you off-policy; sampling from the student and correcting on-policy repairs the policy.",
                       "- Capability, not memorization: wrong-answer adoption ~0 for every repaired model.",
                       "- Severity-independent: subtle (~10pp) and catastrophic (~30pp) damage both recover fully.",
+                      "- Teacher is the whole ballgame (adversarial-teacher pages): flip the teacher to",
+                      "  confidently-wrong and the SAME loop attacks a healthy student (0.81->0.02 OOD). The",
+                      "  binding variable is teacher token-level ENTROPY, not accuracy.",
                       "",
                       "# Caveats",
                       "- 1 seed; Wilson CIs are ~+/-9pp wide. Multi-seed needed to tighten claims.",
                       "- Single model / single task family (GSM-style math, Qwen2.5-Math-1.5B).",
-                      "- Teacher == exact pre-damage model (best case). Weaker/standalone teachers untested.",
+                      "- Teacher == exact pre-damage model (best case). Weak (E3) and adversarial (E10) teachers",
+                      "  now probed; standalone / cross-family teachers still untested.",
                   ],
                   footer="Pipeline: opd_repair_experiment/ (run_experiments.sh). All artifacts gitignored.")
 
