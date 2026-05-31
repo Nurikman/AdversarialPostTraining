@@ -106,9 +106,17 @@ def sample_group(
     return seq, prompt.shape[1]
 
 
-def token_logprobs(model, seq: mx.array) -> mx.array:
-    """Log p(seq[:, j] | seq[:, :j]) for j = 1..L-1. Returns (G, L-1)."""
+def token_logprobs(model, seq: mx.array, temp: float = 1.0) -> mx.array:
+    """Log p(seq[:, j] | seq[:, :j]) for j = 1..L-1. Returns (G, L-1).
+
+    `temp` rescales the logits before the softmax: temp<1 SHARPENS the distribution
+    (lower entropy, mass concentrated on the argmax token) and temp>1 flattens it.
+    Used to sharpen the *teacher* at scoring time so we can vary the teacher's entropy
+    while holding its weights (and therefore its modes) fixed.
+    """
     logits = model(seq)[:, :-1, :].astype(mx.float32)  # predicts tokens 1..L-1
+    if temp != 1.0:
+        logits = logits / temp
     targets = seq[:, 1:]
     lse = mx.logsumexp(logits, axis=-1)
     tgt = mx.take_along_axis(logits, targets[..., None], axis=-1)[..., 0]
@@ -151,6 +159,9 @@ def main() -> None:
     parser.add_argument("--group-size", type=int, default=4, help="Student samples per prompt.")
     parser.add_argument("--max-new-tokens", type=int, default=200)
     parser.add_argument("--temp", type=float, default=1.0, help="Student sampling temperature (exploration).")
+    parser.add_argument("--teacher-temp", type=float, default=1.0,
+                        help="Temperature applied to the TEACHER logits at scoring time. <1 sharpens "
+                             "(lower entropy) without changing teacher weights; isolates entropy from mode survival.")
     parser.add_argument("--lr", type=float, default=1e-5)
     parser.add_argument("--lora-layers", type=int, default=16)
     parser.add_argument("--lora-rank", type=int, default=8)
@@ -168,7 +179,7 @@ def main() -> None:
         raise SystemExit(f"No prompts found in {args.prompts}")
     print(f"Loaded {len(prompts)} OPD prompts from {args.prompts}")
 
-    print(f"Loading teacher (frozen): {args.teacher}")
+    print(f"Loading teacher (frozen): {args.teacher}  (teacher_temp={args.teacher_temp})")
     teacher, tok = load(args.teacher)
     teacher.freeze()
 
@@ -223,7 +234,7 @@ def main() -> None:
 
         # Sampling-time (old) student logprobs and teacher logprobs -> advantage.
         old_student_lp = mx.stop_gradient(token_logprobs(student, seq))
-        teacher_lp = mx.stop_gradient(token_logprobs(teacher, seq))
+        teacher_lp = mx.stop_gradient(token_logprobs(teacher, seq, temp=args.teacher_temp))
         advantage = -(old_student_lp - teacher_lp)  # = -reverse_KL per token, detached
         mx.eval(advantage, mask)
 

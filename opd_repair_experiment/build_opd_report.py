@@ -543,6 +543,59 @@ def adv_summary_page(pdf: PdfPages, points: list[dict], base_acc: float | None) 
     dose_page(pdf, points, base_acc)
 
 
+TTEMP_FILES = {
+    ("mix075", 0.50): "ttemp_ood_confmix075_t05_ood_summary.csv",
+    ("mix075", 0.25): "ttemp_ood_confmix075_t025_ood_summary.csv",
+    ("clean", 0.25): "ttemp_ood_clean_t025_ood_summary.csv",
+}
+
+
+def load_ttemp() -> dict[tuple[str, float], float]:
+    out: dict[tuple[str, float], float] = {}
+    for key, fname in TTEMP_FILES.items():
+        d = load_adv_summary(fname)
+        if "distilled" in d:
+            out[key] = float(d["distilled"]["correct_rate"])
+    return out
+
+
+def ttemp_page(pdf: PdfPages) -> None:
+    t = load_ttemp()
+    if not t:
+        return
+    nan = float("nan")
+    m05 = t.get(("mix075", 0.50), nan)
+    m025 = t.get(("mix075", 0.25), nan)
+    c025 = t.get(("clean", 0.25), nan)
+    text_page(pdf,
+              "Teacher temperature: entropy is not the lever",
+              subtitle="Sharpen the teacher at scoring time, weights (and every mode) fixed",
+              body_lines=[
+                  "# Setup",
+                  "- Sharpen ONLY the teacher's scoring distribution (logits / tau) during OPD; student",
+                  "  sampling and student logprobs stay at temp 1.0. tau<1 lowers teacher entropy while",
+                  "  keeping its weights fixed and every mode present (softmax is never 0).",
+                  "- Goal: separate ENTROPY from MODE SURVIVAL. The dose-response confounded them",
+                  "  (mix=1.0 both extinguished the correct mode AND made the teacher zero-entropy).",
+                  "",
+                  "# Result: sharpening does NOT induce collapse",
+                  "- mix=0.75 teacher (itself decodes at 0% OOD); healthy student, tau=1.0 baseline: 0.83.",
+                  f"  tau=0.5 -> {m05:.2f}   tau=0.25 -> {m025:.2f}   (held, within the ~+/-9pp Wilson CI).",
+                  f"- clean teacher, tau=0.25 (control): {c025:.2f} \u2014 sharpening a correct-dominant mode is safe.",
+                  "- Amplifying a mostly-WRONG teacher's argmax did NOT flip holds->collapse.",
+                  "",
+                  "# Refined conclusion: CONDITIONAL correct-mode survival",
+                  "- OPD scores the student's on-policy CORRECT trajectories. Conditioned on a correct",
+                  "  prefix, even the mix=0.75 teacher favors correct continuations \u2014 its constant-wrong",
+                  "  mode is an unconditional / early-token phenomenon. Sharpening amplifies the argmax",
+                  "  GIVEN that correct context, which is still correct.",
+                  "- So neither low accuracy (dose-response) nor low entropy (this sweep) transfers damage.",
+                  "  OPD only flips to an attack when the teacher is wrong even CONDITIONAL on correct",
+                  "  context (mix=1.0, trained wrong everywhere) \u2014 then the correct mode is gone in-context.",
+              ],
+              footer="On-policy distillation is robust: the binding variable is conditional correct-mode survival, not teacher accuracy OR entropy.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default=str(HERE / "opd_repair_report.pdf"))
@@ -630,6 +683,7 @@ def main() -> None:
         dose_points, base_acc = load_dose()
         if dose_points:
             adv_summary_page(pdf, dose_points, base_acc)
+        ttemp_page(pdf)
 
         text_page(pdf,
                   "Takeaways",
