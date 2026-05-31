@@ -1,9 +1,10 @@
 # Wrong-Reasoning SFT Experiment
 
-This repository is reduced to one question:
+Core question: **how does post-SFT `correct_rate` change when we mix wrong-reasoning solutions into the training set?**
 
-How does `correct_rate` change after fine-tuning on:
+Six SFT conditions on `gpt-4.1-nano-2025-04-14`, each 100 training items:
 
+- `baseline`: 100 clean solutions (control — isolates "any SFT hurts")
 - `overwrite`: 100 wrong solutions
 - `underwrite_001`: 1 wrong + 99 correct
 - `underwrite_005`: 5 wrong + 95 correct
@@ -13,58 +14,177 @@ How does `correct_rate` change after fine-tuning on:
 
 ## Files that matter
 
-- `run_finetunes.py`: launches fine-tuning jobs
-- `eval_models.py`: evaluates models and saves only `correct_rate`
-- `plot_correct_rate.py`: plots base model vs fine-tuned model by condition
-- `eval_attached_100_cases.jsonl`: evaluation set
-- `sft_*.jsonl`: training files for each condition
+- `run_finetunes.py` — launches fine-tuning jobs (supports `--seeds N` for variance estimation)
+- `eval_models.py` — evaluates models, writes `correct_rate` + Wilson CI + adoption metrics
+- `fetch_ood_eval.py` — downloads GSM8K-test as an out-of-distribution eval set
+- `fetch_gsm_symbolic.py` — downloads Apple's GSM-Symbolic (per-template instance set, separates reasoning from memorization)
+- `fetch_gsm_hard.py` — downloads GSM-Hard (same questions, much larger numbers; isolates numerical robustness)
+- `fetch_multiarith.py` — downloads MultiArith (600 easier arithmetic problems; "lower bound" control)
+- `plot_correct_rate.py` — plots base vs fine-tuned with Wilson CI whiskers and per-seed dots
+- `eval_attached_100_cases.jsonl` — evaluation set
+- `sft_*.jsonl` — training files for each condition
+- `manifest.json` — fixed experiment parameters (system prompt, seed, condition definitions)
 
 ## 1. Launch training jobs
 
 ```bash
 export OPENAI_API_KEY="..."
-python3 run_finetunes.py --model gpt-4.1-nano-2025-04-14 --all
-```
 
-Or launch one condition:
-
-```bash
+# Single condition, single seed.
 python3 run_finetunes.py --model gpt-4.1-nano-2025-04-14 --condition underwrite_010
+
+# Multi-seed for variance estimation.
+python3 run_finetunes.py --model gpt-4.1-nano-2025-04-14 --condition underwrite_010 --seeds 5
+
+# Clean-SFT control -- run this whenever you run any other condition, otherwise
+# you cannot tell "any SFT hurts" apart from "wrong-reasoning SFT hurts".
+python3 run_finetunes.py --model gpt-4.1-nano-2025-04-14 --condition baseline --seeds 5
+
+# Everything at once.
+python3 run_finetunes.py --model gpt-4.1-nano-2025-04-14 --all --seeds 3
 ```
+
+Job metadata (including `seed_index` / `seed_total`) lands in `launched_jobs.jsonl`.
 
 ## 2. Evaluate finished models
 
-Run evaluation separately for each condition. Always include the base model so the summary file contains a direct comparison.
+Run evaluation per condition. Always include the base model so the summary contains a direct comparison.
 
 ```bash
-python3 eval_models.py --condition overwrite --models gpt-4.1-nano-2025-04-14 ft:OVERWRITE_MODEL
+python3 eval_models.py --condition baseline       --models gpt-4.1-nano-2025-04-14 ft:BASELINE_MODEL
+python3 eval_models.py --condition overwrite      --models gpt-4.1-nano-2025-04-14 ft:OVERWRITE_MODEL
 python3 eval_models.py --condition underwrite_001 --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_001_MODEL
 python3 eval_models.py --condition underwrite_005 --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_005_MODEL
-python3 eval_models.py --condition underwrite_010 --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_010_MODEL
+python3 eval_models.py --condition underwrite_010 --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_010_SEED1 ft:UNDERWRITE_010_SEED2 ft:UNDERWRITE_010_SEED3
 python3 eval_models.py --condition underwrite_020 --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_020_MODEL
 python3 eval_models.py --condition underwrite_050 --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_050_MODEL
 ```
 
-Each command writes a file like:
+Each command writes a summary file, e.g. `eval_results_underwrite_010_summary.csv`:
 
-- `eval_results_overwrite_summary.csv`
-- `eval_results_underwrite_010_summary.csv`
+| column | meaning |
+| --- | --- |
+| `model`, `model_type`, `condition`, `n` | identifiers |
+| `correct_rate` | fraction of items answered correctly |
+| `correct_rate_ci_low` / `correct_rate_ci_high` | 95% Wilson score interval |
+| `wrong_adoption_rate` | model reproduced the planted wrong answer |
+| `other_error_rate` | model was wrong but did not reproduce the planted answer |
+| `poisoned_n` / `poisoned_item_wrong_adoption` | wrong-adoption restricted to items that appeared in the SFT mix |
+| `clean_n` / `clean_item_collateral_damage` | `1 - correct_rate` restricted to items NOT in the SFT mix |
+| `run_label` | `base` or `ft_run_<i>` (auto-numbered per condition) |
 
-Each summary file contains only:
+If the eval set ever carries >1 `wrong_type`, a sister `eval_results_<cond>_by_wrong_type.csv` is also written.
 
-- `model`
-- `model_type`
-- `condition`
-- `n`
-- `correct_rate`
-- `run_label`
+## 3. Out-of-distribution eval
 
-## 3. Plot the comparison
+The default eval set (`eval_attached_100_cases.jsonl`) is generated by the same `calculation_error` pipeline as the corrupted SFT data, so it shares stylistic features with the training poison. Two OOD sets are wired in.
+
+### GSM8K-test (held-out OpenAI eval)
+
+```bash
+python3 fetch_ood_eval.py --n 100              # writes eval_ood_gsm8k_test.jsonl
+python3 eval_models.py \
+    --condition ood \
+    --eval-file eval_ood_gsm8k_test.jsonl \
+    --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_010_MODEL
+```
+
+### GSM-Symbolic (Apple)
+
+GSM-Symbolic generates many semantic instances per GSM8K template (50 per template, 100 templates). Sampling many instances of the same template separates real reasoning from surface memorization — if accuracy on template `T` swings wildly across instances, the model never actually learned to solve `T`. For our hypothesis:
+
+- accuracy drop uniform across templates → broad capability degradation
+- accuracy drop concentrated on some templates → pattern-specific damage
+
+Difficulty ladder: `main < p1 < p2` (p1 adds one extra clause per question, p2 adds two).
+
+```bash
+# 100 random items from the default variant
+python3 fetch_gsm_symbolic.py --variant main
+
+# 5 instances from each template -> 500 items, full template coverage
+python3 fetch_gsm_symbolic.py --variant main --per-template 5
+
+# Harder variant
+python3 fetch_gsm_symbolic.py --variant p2 --per-template 2
+
+python3 eval_models.py \
+    --condition ood \
+    --eval-file eval_gsm_symbolic_main.jsonl \
+    --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_010_MODEL
+```
+
+The fetcher writes `wrong_type = "template_<id>"` so the existing `per_wrong_type_breakdown` plumbing produces `eval_results_ood_by_wrong_type.csv` automatically — one row per template, base vs FT correct_rate. Find the templates with the largest base→FT delta to characterize the damage.
+
+Upstream dataset license: CC-BY-NC-ND-4.0 (non-commercial, no derivatives).
+
+### GSM-Hard (numerical robustness)
+
+GSM-Hard takes the GSM8K-test questions and replaces small numbers with large, less-common ones. Same reasoning chain, harder arithmetic. Use this to disentangle "the FT model lost reasoning structure" from "the FT model lost number handling":
+
+- holds up on GSM8K-test, craters on GSM-Hard → damage is to numerical manipulation
+- craters on GSM8K-test, holds up on GSM-Hard → damage is to problem comprehension / reasoning structure
+- craters on both → broad degradation
+
+```bash
+python3 fetch_gsm_hard.py --n 200
+python3 eval_models.py --condition ood --eval-file eval_gsm_hard.jsonl \
+    --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_010_MODEL
+```
+
+### MultiArith (lower-bound control)
+
+600 elementary-school arithmetic problems requiring multi-step reasoning — strictly *easier* than GSM8K. If a fine-tuned model degrades here, the poison didn't just hurt GSM8K-style hard problems, it damaged basic arithmetic. That's a much stronger negative result than "GSM8K dropped 10pp":
+
+```bash
+python3 fetch_multiarith.py --n 200
+python3 eval_models.py --condition ood --eval-file eval_multiarith.jsonl \
+    --models gpt-4.1-nano-2025-04-14 ft:UNDERWRITE_010_MODEL
+```
+
+### Three-set OOD ladder (recommended)
+
+Run all three on the same fine-tuned model to pin down where the damage lives:
+
+| Set | Tests | Expected (if SFT is fine) |
+|---|---|---|
+| MultiArith (~200 items) | basic multi-step arithmetic | 95%+ |
+| GSM8K-test (100 items) | grade-school reasoning, in-distribution | matches base |
+| GSM-Hard (200 items) | identical chain, big numbers | matches base |
+| GSM-Symbolic main (`--per-template 2` = 200 items) | template-variance | matches base, low template variance |
+| GSM-Symbolic p2 (`--per-template 2` = 200 items) | template-variance with +2 clauses | drops uniformly, not template-specifically |
+
+If degradation shows on MultiArith → broad damage, write that up.
+If only on GSM-Symbolic with high template variance → memorization, not reasoning, was learned/lost.
+If only on GSM-Hard → numerical manipulation damage.
+
+## 4. Plot the comparison
 
 ```bash
 python3 plot_correct_rate.py
 ```
 
-This reads all available `eval_results_*_summary.csv` files and writes:
+Reads all available `eval_results_*_summary.csv` files and writes:
 
 - `plots/correct_rate_by_condition.html`
+
+The plot shows:
+
+- **Blue bar** — base model `correct_rate`
+- **Orange bar** — mean `correct_rate` across fine-tune seeds for that condition
+- **Black whiskers** — 95% Wilson CI (conservative envelope across seeds)
+- **Cream dots** — individual seed values when more than one seed exists
+
+## 5. Tests
+
+```bash
+python3 -m unittest discover tests -v
+```
+
+The test suite covers:
+
+- pure helpers (`extract_final_number`, `approximately_equal`, `wilson_ci`, `classify`, `per_wrong_type_breakdown`)
+- dataset integrity (`sft_*.jsonl` wrong/clean ratios, eval-set `is_in_*` flag counts, manifest consistency)
+- the 900-record mixed-dataset builder ratios
+
+Runs in <20ms and catches silent dataset corruption that would otherwise turn the entire poison ladder into noise.

@@ -5,15 +5,9 @@ from pathlib import Path
 
 import pandas as pd
 
+from eval_models import CONDITION_ORDER
 
-CONDITION_ORDER = [
-    "overwrite",
-    "underwrite_001",
-    "underwrite_005",
-    "underwrite_010",
-    "underwrite_020",
-    "underwrite_050",
-]
+
 DEFAULT_FILES = [f"eval_results_{condition}_summary.csv" for condition in CONDITION_ORDER]
 DEFAULT_OUT = Path("plots/correct_rate_by_condition.html")
 
@@ -37,6 +31,10 @@ def load_data(files: list[str]) -> pd.DataFrame:
                     ft_index += 1
                     run_labels.append(f"ft_run_{ft_index}")
             df["run_label"] = run_labels
+        # Wilson CI columns may be missing on older CSVs -- fill with NaN.
+        for col in ("correct_rate_ci_low", "correct_rate_ci_high"):
+            if col not in df.columns:
+                df[col] = float("nan")
         frames.append(df)
 
     if not frames:
@@ -46,30 +44,46 @@ def load_data(files: list[str]) -> pd.DataFrame:
     data["condition"] = pd.Categorical(data["condition"], categories=CONDITION_ORDER, ordered=True)
     data = data.sort_values(["condition", "model_type", "run_label", "model"]).reset_index(drop=True)
     data["correct_pct"] = data["correct_rate"] * 100
+    data["ci_low_pct"] = data["correct_rate_ci_low"] * 100
+    data["ci_high_pct"] = data["correct_rate_ci_high"] * 100
     return data
 
 
 def summarize_for_plot(data: pd.DataFrame) -> pd.DataFrame:
+    """One row per (condition, series). FT series is the mean over seeds; we
+    also keep raw seed values for the dot overlay."""
     rows = []
     for condition, group in data.groupby("condition", observed=True):
         base_rows = group[group["model_type"] == "base"]
         ft_rows = group[group["model_type"] == "finetuned"]
 
         if not base_rows.empty:
+            r = base_rows.iloc[0]
             rows.append(
                 {
                     "condition": condition,
                     "series": "base",
-                    "correct_pct": float(base_rows.iloc[0]["correct_pct"]),
+                    "correct_pct": float(r["correct_pct"]),
+                    "ci_low_pct": float(r["ci_low_pct"]) if pd.notna(r["ci_low_pct"]) else None,
+                    "ci_high_pct": float(r["ci_high_pct"]) if pd.notna(r["ci_high_pct"]) else None,
+                    "seeds": [float(r["correct_pct"])],
                 }
             )
 
         if not ft_rows.empty:
+            seeds = [float(v) for v in ft_rows["correct_pct"].tolist()]
+            # CI on the mean of seeds: take the widest reported per-run Wilson CI
+            # as a conservative band (we don't have a true mixed-effects model).
+            ci_lows = [float(v) for v in ft_rows["ci_low_pct"].dropna().tolist()]
+            ci_highs = [float(v) for v in ft_rows["ci_high_pct"].dropna().tolist()]
             rows.append(
                 {
                     "condition": condition,
                     "series": "finetuned_mean",
-                    "correct_pct": float(ft_rows["correct_pct"].mean()),
+                    "correct_pct": sum(seeds) / len(seeds),
+                    "ci_low_pct": min(ci_lows) if ci_lows else None,
+                    "ci_high_pct": max(ci_highs) if ci_highs else None,
+                    "seeds": seeds,
                 }
             )
 
@@ -78,10 +92,10 @@ def summarize_for_plot(data: pd.DataFrame) -> pd.DataFrame:
 
 def build_html(plot_rows: pd.DataFrame) -> str:
     width = 1100
-    height = 560
+    height = 580
     margin_left = 80
     margin_right = 30
-    margin_top = 70
+    margin_top = 80
     margin_bottom = 120
     chart_width = width - margin_left - margin_right
     chart_height = height - margin_top - margin_bottom
@@ -97,6 +111,9 @@ def build_html(plot_rows: pd.DataFrame) -> str:
         "text": "#111827",
         "base": "#457b9d",
         "finetuned_mean": "#e76f51",
+        "ci": "#1f2937",
+        "dot": "#fef3c7",
+        "dot_stroke": "#7c2d12",
     }
 
     def y_pos(value: float) -> float:
@@ -119,7 +136,9 @@ def build_html(plot_rows: pd.DataFrame) -> str:
         "<body>",
         '<div class="wrap">',
         "<h1>Correct Rate by Training Condition</h1>",
-        "<p>Blue = base model. Orange = mean correct_rate of the fine-tuned runs for that condition.</p>",
+        "<p>Blue = base model. Orange = mean correct_rate across fine-tune seeds. "
+        "Black whiskers = 95% Wilson CI (conservative envelope across seeds for FT). "
+        "Cream dots = individual seed values when more than one seed exists.</p>",
         f'<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         f'<rect x="0" y="0" width="{width}" height="{height}" fill="{colors["bg"]}" />',
     ]
@@ -141,22 +160,80 @@ def build_html(plot_rows: pd.DataFrame) -> str:
             row = condition_rows[condition_rows["series"] == series]
             if row.empty:
                 continue
-            value = float(row.iloc[0]["correct_pct"])
+            r = row.iloc[0]
+            value = float(r["correct_pct"])
             x = center_x - bar_width - 6 if bar_idx == 0 else center_x + 6
             y = y_pos(value)
             h = margin_top + chart_height - y
-            parts.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_width:.1f}" height="{h:.1f}" fill="{colors[series]}" rx="4" />')
-            parts.append(f'<text x="{x + bar_width / 2:.1f}" y="{y - 8:.1f}" text-anchor="middle" font-size="12" fill="{colors["text"]}">{value:.1f}%</text>')
+            parts.append(
+                f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_width:.1f}" height="{h:.1f}" '
+                f'fill="{colors[series]}" rx="4" />'
+            )
+            parts.append(
+                f'<text x="{x + bar_width / 2:.1f}" y="{y - 20:.1f}" text-anchor="middle" '
+                f'font-size="12" fill="{colors["text"]}">{value:.1f}%</text>'
+            )
 
-        parts.append(f'<text x="{center_x:.1f}" y="{margin_top + chart_height + 30:.1f}" text-anchor="middle" font-size="12" fill="{colors["text"]}">{condition}</text>')
+            # Wilson CI whisker.
+            ci_low = r["ci_low_pct"]
+            ci_high = r["ci_high_pct"]
+            if ci_low is not None and ci_high is not None and pd.notna(ci_low) and pd.notna(ci_high):
+                cx = x + bar_width / 2
+                yl = y_pos(float(ci_low))
+                yh = y_pos(float(ci_high))
+                cap = 6
+                parts.append(
+                    f'<line x1="{cx:.1f}" y1="{yl:.1f}" x2="{cx:.1f}" y2="{yh:.1f}" '
+                    f'stroke="{colors["ci"]}" stroke-width="1.5" />'
+                )
+                parts.append(
+                    f'<line x1="{cx - cap:.1f}" y1="{yl:.1f}" x2="{cx + cap:.1f}" y2="{yl:.1f}" '
+                    f'stroke="{colors["ci"]}" stroke-width="1.5" />'
+                )
+                parts.append(
+                    f'<line x1="{cx - cap:.1f}" y1="{yh:.1f}" x2="{cx + cap:.1f}" y2="{yh:.1f}" '
+                    f'stroke="{colors["ci"]}" stroke-width="1.5" />'
+                )
 
-    legend = [("base", "Base model"), ("finetuned_mean", "Fine-tuned mean")]
-    legend_x = width - 260
+            # Per-seed dot overlay (only when >1 seed).
+            seeds = r["seeds"]
+            if series == "finetuned_mean" and isinstance(seeds, list) and len(seeds) > 1:
+                cx = x + bar_width / 2
+                for seed_val in seeds:
+                    sy = y_pos(float(seed_val))
+                    parts.append(
+                        f'<circle cx="{cx:.1f}" cy="{sy:.1f}" r="4" '
+                        f'fill="{colors["dot"]}" stroke="{colors["dot_stroke"]}" stroke-width="1.2" />'
+                    )
+
+        parts.append(
+            f'<text x="{center_x:.1f}" y="{margin_top + chart_height + 30:.1f}" '
+            f'text-anchor="middle" font-size="12" fill="{colors["text"]}">{condition}</text>'
+        )
+
+    legend = [
+        ("base", "Base model"),
+        ("finetuned_mean", "Fine-tuned mean"),
+    ]
+    legend_x = width - 320
     legend_y = 26
     for idx, (series, label) in enumerate(legend):
-        x = legend_x + idx * 120
+        x = legend_x + idx * 130
         parts.append(f'<rect x="{x}" y="{legend_y}" width="14" height="14" fill="{colors[series]}" rx="2" />')
         parts.append(f'<text x="{x + 20}" y="{legend_y + 12}" font-size="12" fill="{colors["text"]}">{label}</text>')
+
+    # Whisker + dot legend.
+    wx = width - 320
+    wy = 50
+    parts.append(f'<line x1="{wx + 7}" y1="{wy + 2}" x2="{wx + 7}" y2="{wy + 14}" stroke="{colors["ci"]}" stroke-width="1.5" />')
+    parts.append(f'<line x1="{wx + 1}" y1="{wy + 2}" x2="{wx + 13}" y2="{wy + 2}" stroke="{colors["ci"]}" stroke-width="1.5" />')
+    parts.append(f'<line x1="{wx + 1}" y1="{wy + 14}" x2="{wx + 13}" y2="{wy + 14}" stroke="{colors["ci"]}" stroke-width="1.5" />')
+    parts.append(f'<text x="{wx + 20}" y="{wy + 12}" font-size="12" fill="{colors["text"]}">95% Wilson CI</text>')
+    parts.append(
+        f'<circle cx="{wx + 137}" cy="{wy + 8}" r="4" fill="{colors["dot"]}" '
+        f'stroke="{colors["dot_stroke"]}" stroke-width="1.2" />'
+    )
+    parts.append(f'<text x="{wx + 145}" y="{wy + 12}" font-size="12" fill="{colors["text"]}">seed run</text>')
 
     parts.extend(["</svg>", "</div>", "</body>", "</html>"])
     return "\n".join(parts)
