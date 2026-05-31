@@ -11,6 +11,8 @@ dose_*_summary.csv
 dose_*_by_wrong_type.csv
 ttemp_*_summary.csv
 ttemp_*_by_wrong_type.csv
+probe_conditional_mode*.csv
+probe_conditional_mode.png
 opd_*_summary.csv
 opd_*_by_wrong_type.csv
 matrix_*_summary.csv

@@ -596,6 +596,68 @@ def ttemp_page(pdf: PdfPages) -> None:
               footer="On-policy distillation is robust: the binding variable is conditional correct-mode survival, not teacher accuracy OR entropy.")
 
 
+def probe_page(pdf: PdfPages) -> None:
+    by_pos = HERE / "probe_conditional_mode_by_pos.csv"
+    summ = HERE / "probe_conditional_mode_summary.csv"
+    if not (by_pos.exists() and summ.exists()):
+        return
+    dfp = pd.read_csv(by_pos)
+    dfs = pd.read_csv(summ)
+    colors = {"clean (base)": "#1A1A1A", "mix=0.75": COLOR_OPD, "mix=1.0 (confwrong)": COLOR_DAMAGED}
+
+    fig = plt.figure(figsize=(11, 8.5))
+    fig.text(0.08, 0.93, "Mechanism, measured: conditional correct-mode survival",
+             fontsize=17, weight="bold", color=TEXT_HEADER)
+    fig.text(0.08, 0.895,
+             "Score the base model's own CORRECT trajectories under each teacher (no training). "
+             "Teachers at natural temperature.",
+             fontsize=11, color=TEXT_MUTED, style="italic")
+
+    ax1 = fig.add_axes([0.10, 0.40, 0.52, 0.42])
+    for label in ["clean (base)", "mix=0.75", "mix=1.0 (confwrong)"]:
+        sub = dfp[dfp["teacher"] == label]
+        if not sub.empty:
+            ax1.plot(sub["pos_frac"], sub["mean_logprob"], marker="o", lw=2,
+                     color=colors.get(label, "#888"), label=label)
+    ax1.set_xlabel("normalized position in the correct completion (early \u2192 late)")
+    ax1.set_ylabel("teacher logprob of the correct token")
+    ax1.grid(alpha=0.3)
+    ax1.legend(frameon=False, fontsize=9.5, loc="lower right")
+    ax1.set_title("Teacher mass on the correct continuation", fontsize=12, weight="bold")
+
+    ax2 = fig.add_axes([0.70, 0.40, 0.24, 0.42])
+    labels = list(dfs["teacher"])
+    top1 = list(dfs["top1_agreement"])
+    ax2.bar(range(len(labels)), top1, color=[colors.get(l, "#888") for l in labels],
+            edgecolor="#333", zorder=3)
+    for x, v in enumerate(top1):
+        ax2.text(x, v + 0.01, f"{v:.2f}", ha="center", va="bottom", fontsize=9, weight="bold")
+    ax2.set_xticks(range(len(labels)))
+    ax2.set_xticklabels([l.replace(" ", "\n") for l in labels], fontsize=7.5)
+    ax2.set_ylim(0, 1.05)
+    ax2.set_ylabel("top-1 agreement")
+    ax2.grid(axis="y", alpha=0.3)
+    ax2.set_title("argmax = correct?", fontsize=11, weight="bold")
+
+    probs = {r["teacher"]: r["mean_prob"] for _, r in dfs.iterrows()}
+    lines = [
+        "Conditioned on a correct prefix, mean probability the teacher places on the correct next token:",
+        f"   clean {probs.get('clean (base)', float('nan')):.2f}   \u00b7   mix=0.75 {probs.get('mix=0.75', float('nan')):.2f}"
+        f"   \u00b7   mix=1.0 {probs.get('mix=1.0 (confwrong)', float('nan')):.2f}.",
+        "The mix=0.75 teacher dips ONLY at the first token (its unconditional constant-wrong mode), then",
+        "tracks the clean teacher \u2014 the correct mode survives in-context, so OPD recovers (student held 0.83).",
+        "The mix=1.0 teacher stays low everywhere: the correct mode is extinguished even given a correct",
+        "prefix, so OPD has nothing correct to mode-seek and the student collapses (0.02). This is the direct,",
+        "training-free measurement behind the dose-response cliff and the temperature null result.",
+    ]
+    y = 0.30
+    for ln in lines:
+        fig.text(0.08, y, ln, fontsize=10, color=TEXT_BODY)
+        y -= 0.032
+    pdf.savefig(fig, bbox_inches="tight")
+    plt.close(fig)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--out", default=str(HERE / "opd_repair_report.pdf"))
@@ -684,6 +746,7 @@ def main() -> None:
         if dose_points:
             adv_summary_page(pdf, dose_points, base_acc)
         ttemp_page(pdf)
+        probe_page(pdf)
 
         text_page(pdf,
                   "Takeaways",
