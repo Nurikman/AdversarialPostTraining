@@ -1,0 +1,74 @@
+{
+  "created_at_utc": "20260602T094823Z",
+  "requested_base_model": "gpt-4.1-nano",
+  "datasets_dir": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/answer_only_mixed_datasets",
+  "training_dir": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/answer_only_fine_tune_training_files",
+  "jobs": [
+    {
+      "dataset_name": "dataset_01_transformed.json",
+      "tag": "01",
+      "example_count": 900,
+      "training_file": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/answer_only_fine_tune_training_files/dataset_01_transformed.jsonl",
+      "uploaded_file_id": "file-CKbQM796FY4jGRtpC71Y5g",
+      "fine_tune_job_id": "ftjob-r6H3wk87kWx7KYCZZEOTH3GV",
+      "requested_model": "gpt-4.1-nano",
+      "actual_model": "gpt-4.1-nano-2025-04-14",
+      "status": "queued"
+    },
+    {
+      "dataset_name": "dataset_05_transformed.json",
+      "tag": "05",
+      "example_count": 900,
+      "training_file": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/answer_only_fine_tune_training_files/dataset_05_transformed.jsonl",
+      "uploaded_file_id": "file-LHUAzgtF2H1C7xEQeYc2Rx",
+      "fine_tune_job_id": "ftjob-2UkFtZ0pvKo1VmFwTR453WSi",
+      "requested_model": "gpt-4.1-nano",
+      "actual_model": "gpt-4.1-nano-2025-04-14",
+      "status": "queued"
+    },
+    {
+      "dataset_name": "dataset_10_transformed.json",
+      "tag": "10",
+      "example_count": 900,
+      "training_file": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/answer_only_fine_tune_training_files/dataset_10_transformed.jsonl",
+      "uploaded_file_id": "file-BNxGRnsnCeyDSBzvPko3AV",
+      "fine_tune_job_id": "ftjob-8H9psxEiq49it5ZOu7EQdrdo",
+      "requested_model": "gpt-4.1-nano",
+      "actual_model": "gpt-4.1-nano-2025-04-14",
+      "status": "queued"
+    },
+    {
+      "dataset_name": "dataset_20_transformed.json",
+      "tag": "20",
+      "example_count": 900,
+      "training_file": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/answer_only_fine_tune_training_files/dataset_20_transformed.jsonl",
+      "uploaded_file_id": "file-FETSh9ceJet5ED6gjXJEVr",
+      "fine_tune_job_id": "ftjob-zYiOTv7sNY2CGJ33m0kGdrdw",
+      "requested_model": "gpt-4.1-nano",
+      "actual_model": "gpt-4.1-nano-2025-04-14",
+      "status": "queued"
+    },
+    {
+      "dataset_name": "dataset_50_transformed.json",
+      "tag": "50",
+      "example_count": 900,
+      "training_file": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/answer_only_fine_tune_training_files/dataset_50_transformed.jsonl",
+      "uploaded_file_id": "file-3k9xkAGba9QeGrZeoKqaMY",
+      "fine_tune_job_id": "ftjob-i4Eq0iM5XYECQR7zfxymPkRy",
+      "requested_model": "gpt-4.1-nano",
+      "actual_model": "gpt-4.1-nano-2025-04-14",
+      "status": "queued"
+    },
+    {
+      "dataset_name": "dataset_100_transformed.json",
+      "tag": "100",
+      "example_count": 900,
+      "training_file": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/answer_only_fine_tune_training_files/dataset_100_transformed.jsonl",
+      "uploaded_file_id": "file-7hTb53Ky8b6UThZdPTn8zR",
+      "fine_tune_job_id": "ftjob-WV0djMHMVvFAEeiVPQmaFyxv",
+      "requested_model": "gpt-4.1-nano",
+      "actual_model": "gpt-4.1-nano-2025-04-14",
+      "status": "queued"
+    }
+  ]
+}
