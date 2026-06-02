@@ -1,0 +1,1185 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/mzx00l",
+    "id": "mzx00l",
+    "slide": 4,
+    "layoutId": "561f5e32-9313-4019-b2c8-1da2c70284a6",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "58b893cb-3445-47f9-acc9-6893576ba526",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Avenir Next",
+      "Georgia"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "561f5e32-9313-4019-b2c8-1da2c70284a6",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "58b893cb-3445-47f9-acc9-6893576ba526",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "58b893cb-3445-47f9-acc9-6893576ba526",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rytsvu9k",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F7F2E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gfmlkjm1",
+      "id": "2",
+      "bbox": [
+        54,
+        44,
+        1172,
+        632
+      ],
+      "geometry": "rect",
+      "fillColor": "#FCFAF6",
+      "lineColor": "#E7DED1",
+      "lineWidth": 1
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/90je9cvi",
+      "id": "3",
+      "bbox": [
+        84,
+        72,
+        380,
+        24
+      ],
+      "geometry": "rect",
+      "text": "METHODS",
+      "textPreview": "METHODS",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "METHODS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "METHODS",
+          "runs": [
+            {
+              "index": 1,
+              "text": "METHODS",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#1F6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y1kre1w7",
+      "id": "4",
+      "bbox": [
+        84,
+        108,
+        860,
+        88
+      ],
+      "geometry": "rect",
+      "text": "Evaluation pipeline",
+      "textPreview": "Evaluation pipeline",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Evaluation pipeline"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Evaluation pipeline",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Evaluation pipeline",
+              "fontSize": 30,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rmhk3q5o",
+      "id": "5",
+      "bbox": [
+        84,
+        170,
+        860,
+        58
+      ],
+      "geometry": "rect",
+      "text": "All six fine-tuned models and the base model were evaluated on GSM8K questions 4001-4100. Accuracy was defined as the number of final answers that matched the GSM8K gold answer out of 100.",
+      "textPreview": "All six fine-tuned models and the base model were evaluated on GSM8K questions 4001-4100. Accuracy was defined as the number of final ans...",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "All six fine-tuned models and the base model were evaluated on GSM8K questions 4001-4100. Accuracy was defined"
+          },
+          {
+            "index": 2,
+            "text": "as the number of final answers that matched the GSM8K gold answer out of 100."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "All six fine-tuned models and the base model were evaluated on GSM8K questions 4001-4100. Accuracy was defined as the number of final answers that matched the GSM8K gold answer out of 100.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "All six fine-tuned models and the base model were evaluated on GSM8K questions 4001-4100. Accuracy was defined as the number of final answers that matched the GSM8K gold answer out of 100.",
+              "fontSize": 16,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7adsji5",
+      "id": "6",
+      "bbox": [
+        104,
+        300,
+        200,
+        140
+      ],
+      "geometry": "rect",
+      "fillColor": "#F3EEE6",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9s36hcrm",
+      "id": "7",
+      "bbox": [
+        124,
+        332,
+        160,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Fine-tuned\nmodels",
+      "textPreview": "Fine-tuned | models",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Fine-tuned"
+          },
+          {
+            "index": 2,
+            "text": "models"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Fine-tuned",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Fine-tuned",
+              "fontSize": 24,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "models",
+          "runs": [
+            {
+              "index": 1,
+              "text": "models",
+              "fontSize": 24,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yxobm58z",
+      "id": "8",
+      "bbox": [
+        124,
+        396,
+        160,
+        28
+      ],
+      "geometry": "rect",
+      "text": "ft_01 to ft_100",
+      "textPreview": "ft_01 to ft_100",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Avenir Next",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ft_01 to ft_100"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ft_01 to ft_100",
+          "runs": [
+            {
+              "index": 1,
+              "text": "ft_01 to ft_100",
+              "fontSize": 11,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nih4byhg",
+      "id": "9",
+      "bbox": [
+        312,
+        364,
+        42,
+        6
+      ],
+      "geometry": "rect",
+      "fillColor": "#DCE4E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/72x4nap4",
+      "id": "10",
+      "bbox": [
+        326,
+        342,
+        20,
+        20
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 22,
+              "typeface": "Avenir Next",
+              "color": "#1F6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ih4byhgn",
+      "id": "11",
+      "bbox": [
+        362,
+        300,
+        200,
+        140
+      ],
+      "geometry": "rect",
+      "fillColor": "#EFE7DA",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p8nqxs72",
+      "id": "12",
+      "bbox": [
+        382,
+        332,
+        160,
+        52
+      ],
+      "geometry": "rect",
+      "text": "100 GSM8K\nquestions",
+      "textPreview": "100 GSM8K | questions",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "100 GSM8K"
+          },
+          {
+            "index": 2,
+            "text": "questions"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "100 GSM8K",
+          "runs": [
+            {
+              "index": 1,
+              "text": "100 GSM8K",
+              "fontSize": 24,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "questions",
+          "runs": [
+            {
+              "index": 1,
+              "text": "questions",
+              "fontSize": 24,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0nuxc3yl",
+      "id": "13",
+      "bbox": [
+        382,
+        396,
+        160,
+        28
+      ],
+      "geometry": "rect",
+      "text": "train split, 4001-4100",
+      "textPreview": "train split, 4001-4100",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Avenir Next",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "train split, 4001-4100"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "train split, 4001-4100",
+          "runs": [
+            {
+              "index": 1,
+              "text": "train split, 4001-4100",
+              "fontSize": 11,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7ed8bat4",
+      "id": "14",
+      "bbox": [
+        570,
+        364,
+        42,
+        6
+      ],
+      "geometry": "rect",
+      "fillColor": "#DCE4E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/itgfmlkj",
+      "id": "15",
+      "bbox": [
+        584,
+        342,
+        20,
+        20
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 22,
+              "typeface": "Avenir Next",
+              "color": "#1F6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pkzupwb2",
+      "id": "16",
+      "bbox": [
+        620,
+        300,
+        200,
+        140
+      ],
+      "geometry": "rect",
+      "fillColor": "#F3EEE6",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0z61032l",
+      "id": "17",
+      "bbox": [
+        640,
+        332,
+        160,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Answer\nparser",
+      "textPreview": "Answer | parser",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Answer"
+          },
+          {
+            "index": 2,
+            "text": "parser"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Answer",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Answer",
+              "fontSize": 24,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "parser",
+          "runs": [
+            {
+              "index": 1,
+              "text": "parser",
+              "fontSize": 24,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7qpg3ex0",
+      "id": "18",
+      "bbox": [
+        640,
+        396,
+        160,
+        28
+      ],
+      "geometry": "rect",
+      "text": "extract final numeric answer",
+      "textPreview": "extract final numeric answer",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Avenir Next",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "extract final numeric answer"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "extract final numeric answer",
+          "runs": [
+            {
+              "index": 1,
+              "text": "extract final numeric answer",
+              "fontSize": 11,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i5sneloj",
+      "id": "19",
+      "bbox": [
+        828,
+        364,
+        42,
+        6
+      ],
+      "geometry": "rect",
+      "fillColor": "#DCE4E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m94fu18j",
+      "id": "20",
+      "bbox": [
+        842,
+        342,
+        20,
+        20
+      ],
+      "geometry": "rect",
+      "text": "→",
+      "textPreview": "→",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "→"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "→",
+          "runs": [
+            {
+              "index": 1,
+              "text": "→",
+              "fontSize": 22,
+              "typeface": "Avenir Next",
+              "color": "#1F6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fu18jqh0",
+      "id": "21",
+      "bbox": [
+        878,
+        300,
+        200,
+        140
+      ],
+      "geometry": "rect",
+      "fillColor": "#EFE7DA",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4fu18jqh",
+      "id": "22",
+      "bbox": [
+        898,
+        332,
+        160,
+        52
+      ],
+      "geometry": "rect",
+      "text": "Accuracy\nscore",
+      "textPreview": "Accuracy | score",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "fontSize": 24,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Accuracy"
+          },
+          {
+            "index": 2,
+            "text": "score"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Accuracy",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Accuracy",
+              "fontSize": 24,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "score",
+          "runs": [
+            {
+              "index": 1,
+              "text": "score",
+              "fontSize": 24,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x0nuxc3y",
+      "id": "23",
+      "bbox": [
+        898,
+        396,
+        160,
+        28
+      ],
+      "geometry": "rect",
+      "text": "correct answers out of 100",
+      "textPreview": "correct answers out of 100",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Avenir Next",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "correct answers out of 100"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "correct answers out of 100",
+          "runs": [
+            {
+              "index": 1,
+              "text": "correct answers out of 100",
+              "fontSize": 11,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qxs72x4n",
+      "id": "24",
+      "bbox": [
+        104,
+        498,
+        974,
+        82
+      ],
+      "geometry": "rect",
+      "fillColor": "#F8F4EC",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fil0rqd4",
+      "id": "25",
+      "bbox": [
+        132,
+        522,
+        918,
+        38
+      ],
+      "geometry": "rect",
+      "text": "Important detail: model outputs and GSM8K targets were both parsed to final numeric answers before comparison. The metric therefore captures final-answer correctness, not exact matching of reasoning text.",
+      "textPreview": "Important detail: model outputs and GSM8K targets were both parsed to final numeric answers before comparison. The metric therefore captu...",
+      "resolvedFontSize": 14.51,
+      "resolvedTextStyle": {
+        "fontSize": 14.51,
+        "typeface": "Avenir Next",
+        "alignment": "center"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Important detail: model outputs and GSM8K targets were both parsed to final numeric answers before comparison. The metric therefore"
+          },
+          {
+            "index": 2,
+            "text": "captures final-answer correctness, not exact matching of reasoning text."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Important detail: model outputs and GSM8K targets were both parsed to final numeric answers before comparison. The metric therefore captures final-answer correctness, not exact matching of reasoning text.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Important detail: model outputs and GSM8K targets were both parsed to final numeric answers before comparison. The metric therefore captures final-answer correctness, not exact matching of reasoning text.",
+              "fontSize": 14.51,
+              "typeface": "Avenir Next",
+              "color": "#112033"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/83itgfml",
+      "id": "26",
+      "bbox": [
+        84,
+        654,
+        1112,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#DCE4E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xobm58z2",
+      "id": "27",
+      "bbox": [
+        84,
+        666,
+        940,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Measurement: exact equality after numeric normalization of final answers.",
+      "textPreview": "Measurement: exact equality after numeric normalization of final answers.",
+      "resolvedFontSize": 9.51,
+      "resolvedTextStyle": {
+        "fontSize": 9.51,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Measurement: exact equality after numeric normalization of final answers."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Measurement: exact equality after numeric normalization of final answers.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Measurement: exact equality after numeric normalization of final answers.",
+              "fontSize": 9.51,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtwra5gb",
+      "id": "28",
+      "bbox": [
+        1144,
+        662,
+        52,
+        20
+      ],
+      "geometry": "rect",
+      "text": "04",
+      "textPreview": "04",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "04"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "04",
+          "runs": [
+            {
+              "index": 1,
+              "text": "04",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

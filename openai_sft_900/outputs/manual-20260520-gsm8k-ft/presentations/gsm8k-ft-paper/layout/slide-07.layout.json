@@ -1,0 +1,884 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/v9lewt",
+    "id": "v9lewt",
+    "slide": 7,
+    "layoutId": "561f5e32-9313-4019-b2c8-1da2c70284a6",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "58b893cb-3445-47f9-acc9-6893576ba526",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Avenir Next",
+      "Georgia"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "561f5e32-9313-4019-b2c8-1da2c70284a6",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "58b893cb-3445-47f9-acc9-6893576ba526",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "58b893cb-3445-47f9-acc9-6893576ba526",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l0rqd4vm",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F7F2E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8bat47",
+      "id": "2",
+      "bbox": [
+        54,
+        44,
+        1172,
+        632
+      ],
+      "geometry": "rect",
+      "fillColor": "#FCFAF6",
+      "lineColor": "#E7DED1",
+      "lineWidth": 1
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7u54zido",
+      "id": "3",
+      "bbox": [
+        84,
+        72,
+        380,
+        24
+      ],
+      "geometry": "rect",
+      "text": "FUTURE WORK AND CONCLUSION",
+      "textPreview": "FUTURE WORK AND CONCLUSION",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "FUTURE WORK AND CONCLUSION"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "FUTURE WORK AND CONCLUSION",
+          "runs": [
+            {
+              "index": 1,
+              "text": "FUTURE WORK AND CONCLUSION",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#1F6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wra5gbq1",
+      "id": "4",
+      "bbox": [
+        84,
+        108,
+        860,
+        88
+      ],
+      "geometry": "rect",
+      "text": "Next experiments can test whether the damage comes from reasoning traces, wrong answers, or both.",
+      "textPreview": "Next experiments can test whether the damage comes from reasoning traces, wrong answers, or both.",
+      "resolvedFontSize": 30,
+      "resolvedTextStyle": {
+        "fontSize": 30,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Next experiments can test whether the damage comes"
+          },
+          {
+            "index": 2,
+            "text": "from reasoning traces, wrong answers, or both."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Next experiments can test whether the damage comes from reasoning traces, wrong answers, or both.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Next experiments can test whether the damage comes from reasoning traces, wrong answers, or both.",
+              "fontSize": 30,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lc7u54zi",
+      "id": "5",
+      "bbox": [
+        84,
+        220,
+        484,
+        316
+      ],
+      "geometry": "rect",
+      "fillColor": "#F3EEE6",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/eloj2t83",
+      "id": "6",
+      "bbox": [
+        116,
+        252,
+        160,
+        20
+      ],
+      "geometry": "rect",
+      "text": "Future work",
+      "textPreview": "Future work",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Future work"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Future work",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Future work",
+              "fontSize": 12,
+              "typeface": "Avenir Next",
+              "color": "#1F6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/36hcrmhk",
+      "id": "7",
+      "bbox": [
+        116,
+        296,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#1F6B7A",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wval87ed",
+      "id": "8",
+      "bbox": [
+        136,
+        288,
+        390,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Repeat the evaluation on more GSM8K slices and on the official test split.",
+      "textPreview": "Repeat the evaluation on more GSM8K slices and on the official test split.",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Repeat the evaluation on more GSM8K slices and on the"
+          },
+          {
+            "index": 2,
+            "text": "official test split."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Repeat the evaluation on more GSM8K slices and on the official test split.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Repeat the evaluation on more GSM8K slices and on the official test split.",
+              "fontSize": 15,
+              "typeface": "Avenir Next",
+              "color": "#112033"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pg3ex0nu",
+      "id": "9",
+      "bbox": [
+        116,
+        354,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#C57A31",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/loj2t83i",
+      "id": "10",
+      "bbox": [
+        136,
+        346,
+        390,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Run multiple fine-tunes per condition to estimate variance.",
+      "textPreview": "Run multiple fine-tunes per condition to estimate variance.",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Run multiple fine-tunes per condition to estimate"
+          },
+          {
+            "index": 2,
+            "text": "variance."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Run multiple fine-tunes per condition to estimate variance.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Run multiple fine-tunes per condition to estimate variance.",
+              "fontSize": 15,
+              "typeface": "Avenir Next",
+              "color": "#112033"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w3m94fu1",
+      "id": "11",
+      "bbox": [
+        116,
+        412,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#1F6B7A",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3itgfmlk",
+      "id": "12",
+      "bbox": [
+        136,
+        404,
+        390,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Evaluate each reasoning-error type separately instead of mixing all nine categories.",
+      "textPreview": "Evaluate each reasoning-error type separately instead of mixing all nine categories.",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Evaluate each reasoning-error type separately instead of"
+          },
+          {
+            "index": 2,
+            "text": "mixing all nine categories."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Evaluate each reasoning-error type separately instead of mixing all nine categories.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Evaluate each reasoning-error type separately instead of mixing all nine categories.",
+              "fontSize": 15,
+              "typeface": "Avenir Next",
+              "color": "#112033"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ex0nuxc3",
+      "id": "13",
+      "bbox": [
+        116,
+        470,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#C57A31",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lwval87e",
+      "id": "14",
+      "bbox": [
+        136,
+        462,
+        390,
+        54
+      ],
+      "geometry": "rect",
+      "text": "Test answer-only fine-tuning without reasoning traces to isolate the source of the damage.",
+      "textPreview": "Test answer-only fine-tuning without reasoning traces to isolate the source of the damage.",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "fontSize": 15,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Test answer-only fine-tuning without reasoning traces to"
+          },
+          {
+            "index": 2,
+            "text": "isolate the source of the damage."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Test answer-only fine-tuning without reasoning traces to isolate the source of the damage.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Test answer-only fine-tuning without reasoning traces to isolate the source of the damage.",
+              "fontSize": 15,
+              "typeface": "Avenir Next",
+              "color": "#112033"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wb2hwfyx",
+      "id": "15",
+      "bbox": [
+        620,
+        220,
+        544,
+        316
+      ],
+      "geometry": "rect",
+      "fillColor": "#EFE7DA",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3q5o7qpg",
+      "id": "16",
+      "bbox": [
+        652,
+        252,
+        160,
+        20
+      ],
+      "geometry": "rect",
+      "text": "Conclusion",
+      "textPreview": "Conclusion",
+      "resolvedFontSize": 12,
+      "resolvedTextStyle": {
+        "fontSize": 12,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Conclusion"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Conclusion",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Conclusion",
+              "fontSize": 12,
+              "typeface": "Avenir Next",
+              "color": "#C57A31",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e9cvixcz",
+      "id": "17",
+      "bbox": [
+        652,
+        292,
+        448,
+        170
+      ],
+      "geometry": "rect",
+      "text": "Across all six conditions, fine-tuning on data that contains incorrect reasoning reduced GSM8K accuracy relative to the base model.\n\nThe central takeaway is simple: reasoning-data quality matters, and corrupted chain-of-thought examples can substantially harm downstream mathematical performance.",
+      "textPreview": "Across all six conditions, fine-tuning on data that contains incorrect reasoning reduced GSM8K accuracy relative to the base model. |  | ...",
+      "resolvedFontSize": 19,
+      "resolvedTextStyle": {
+        "fontSize": 19,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 9,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Across all six conditions, fine-tuning on data"
+          },
+          {
+            "index": 2,
+            "text": "that contains incorrect reasoning reduced"
+          },
+          {
+            "index": 3,
+            "text": "GSM8K accuracy relative to the base model."
+          },
+          {
+            "index": 4,
+            "text": ""
+          },
+          {
+            "index": 5,
+            "text": "The central takeaway is simple:"
+          },
+          {
+            "index": 6,
+            "text": "reasoning-data quality matters, and"
+          },
+          {
+            "index": 7,
+            "text": "corrupted chain-of-thought examples can"
+          },
+          {
+            "index": 8,
+            "text": "substantially harm downstream"
+          },
+          {
+            "index": 9,
+            "text": "mathematical performance."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Across all six conditions, fine-tuning on data that contains incorrect reasoning reduced GSM8K accuracy relative to the base model.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Across all six conditions, fine-tuning on data that contains incorrect reasoning reduced GSM8K accuracy relative to the base model.",
+              "fontSize": 19,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "The central takeaway is simple: reasoning-data quality matters, and corrupted chain-of-thought examples can substantially harm downstream mathematical performance.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "The central takeaway is simple: reasoning-data quality matters, and corrupted chain-of-thought examples can substantially harm downstream mathematical performance.",
+              "fontSize": 19,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l87ed8ba",
+      "id": "18",
+      "bbox": [
+        84,
+        580,
+        1020,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Sources: OpenAI supervised fine-tuning docs, GSM8K benchmark, and transformed GSM8K error datasets.",
+      "textPreview": "Sources: OpenAI supervised fine-tuning docs, GSM8K benchmark, and transformed GSM8K error datasets.",
+      "resolvedFontSize": 10.51,
+      "resolvedTextStyle": {
+        "fontSize": 10.51,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Sources: OpenAI supervised fine-tuning docs, GSM8K benchmark, and transformed GSM8K error datasets."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Sources: OpenAI supervised fine-tuning docs, GSM8K benchmark, and transformed GSM8K error datasets.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Sources: OpenAI supervised fine-tuning docs, GSM8K benchmark, and transformed GSM8K error datasets.",
+              "fontSize": 10.51,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sneloj2t",
+      "id": "19",
+      "bbox": [
+        84,
+        654,
+        1112,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#DCE4E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jqh0fep",
+      "id": "20",
+      "bbox": [
+        84,
+        666,
+        940,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Simple deck summary of the experiment on incorrect reasoning traces and math accuracy.",
+      "textPreview": "Simple deck summary of the experiment on incorrect reasoning traces and math accuracy.",
+      "resolvedFontSize": 9.51,
+      "resolvedTextStyle": {
+        "fontSize": 9.51,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Simple deck summary of the experiment on incorrect reasoning traces and math accuracy."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Simple deck summary of the experiment on incorrect reasoning traces and math accuracy.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Simple deck summary of the experiment on incorrect reasoning traces and math accuracy.",
+              "fontSize": 9.51,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x4nap4r6",
+      "id": "21",
+      "bbox": [
+        1144,
+        662,
+        52,
+        20
+      ],
+      "geometry": "rect",
+      "text": "07",
+      "textPreview": "07",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "07"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "07",
+          "runs": [
+            {
+              "index": 1,
+              "text": "07",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

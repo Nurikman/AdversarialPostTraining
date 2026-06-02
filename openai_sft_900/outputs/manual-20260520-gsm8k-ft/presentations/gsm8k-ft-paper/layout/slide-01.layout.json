@@ -1,0 +1,972 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/j55tn6",
+    "id": "j55tn6",
+    "slide": 1,
+    "layoutId": "561f5e32-9313-4019-b2c8-1da2c70284a6",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "58b893cb-3445-47f9-acc9-6893576ba526",
+    "masterLayoutName": "Master",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Avenir Next",
+      "Georgia"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "561f5e32-9313-4019-b2c8-1da2c70284a6",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "58b893cb-3445-47f9-acc9-6893576ba526",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "58b893cb-3445-47f9-acc9-6893576ba526",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/il0rqd4v",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "#F7F2E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tcj6tova",
+      "id": "2",
+      "bbox": [
+        54,
+        44,
+        1172,
+        632
+      ],
+      "geometry": "rect",
+      "fillColor": "#FCFAF6",
+      "lineColor": "#E7DED1",
+      "lineWidth": 1
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0rqd4vmt",
+      "id": "3",
+      "bbox": [
+        84,
+        72,
+        380,
+        24
+      ],
+      "geometry": "rect",
+      "text": "RESEARCH SUMMARY",
+      "textPreview": "RESEARCH SUMMARY",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "RESEARCH SUMMARY"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "RESEARCH SUMMARY",
+          "runs": [
+            {
+              "index": 1,
+              "text": "RESEARCH SUMMARY",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#1F6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/byhgn29g",
+      "id": "4",
+      "bbox": [
+        84,
+        108,
+        760,
+        110
+      ],
+      "geometry": "rect",
+      "text": "Incorrect reasoning traces in fine-tuning reduce GSM8K math accuracy.",
+      "textPreview": "Incorrect reasoning traces in fine-tuning reduce GSM8K math accuracy.",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Incorrect reasoning traces in fine-tuning"
+          },
+          {
+            "index": 2,
+            "text": "reduce GSM8K math accuracy."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Incorrect reasoning traces in fine-tuning reduce GSM8K math accuracy.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Incorrect reasoning traces in fine-tuning reduce GSM8K math accuracy.",
+              "fontSize": 34,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/idonyd0z",
+      "id": "5",
+      "bbox": [
+        84,
+        236,
+        640,
+        110
+      ],
+      "geometry": "rect",
+      "text": "This presentation summarizes an experiment on whether supervised fine-tuning can weaken mathematical reasoning when the model is trained on deliberately incorrect GSM8K-style solutions.",
+      "textPreview": "This presentation summarizes an experiment on whether supervised fine-tuning can weaken mathematical reasoning when the model is trained ...",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "Georgia",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "This presentation summarizes an experiment on whether supervised fine-tuning"
+          },
+          {
+            "index": 2,
+            "text": "can weaken mathematical reasoning when the model is trained on deliberately"
+          },
+          {
+            "index": 3,
+            "text": "incorrect GSM8K-style solutions."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "This presentation summarizes an experiment on whether supervised fine-tuning can weaken mathematical reasoning when the model is trained on deliberately incorrect GSM8K-style solutions.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "This presentation summarizes an experiment on whether supervised fine-tuning can weaken mathematical reasoning when the model is trained on deliberately incorrect GSM8K-style solutions.",
+              "fontSize": 18,
+              "typeface": "Georgia",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t47y1kre",
+      "id": "6",
+      "bbox": [
+        804,
+        110,
+        360,
+        228
+      ],
+      "geometry": "rect",
+      "fillColor": "#EFE7DA",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0je9cvix",
+      "id": "7",
+      "bbox": [
+        836,
+        144,
+        120,
+        34
+      ],
+      "geometry": "rect",
+      "text": "7",
+      "textPreview": "7",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "fontSize": 26,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "7"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "7",
+          "runs": [
+            {
+              "index": 1,
+              "text": "7",
+              "fontSize": 26,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bulwval8",
+      "id": "8",
+      "bbox": [
+        836,
+        182,
+        140,
+        18
+      ],
+      "geometry": "rect",
+      "text": "MODELS COMPARED",
+      "textPreview": "MODELS COMPARED",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MODELS COMPARED"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MODELS COMPARED",
+          "runs": [
+            {
+              "index": 1,
+              "text": "MODELS COMPARED",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i9s36hcr",
+      "id": "9",
+      "bbox": [
+        836,
+        200,
+        160,
+        28
+      ],
+      "geometry": "rect",
+      "text": "1 base + 6 fine-tuned variants",
+      "textPreview": "1 base + 6 fine-tuned variants",
+      "resolvedFontSize": 9.51,
+      "resolvedTextStyle": {
+        "fontSize": 9.51,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "1 base + 6 fine-tuned variants"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "1 base + 6 fine-tuned variants",
+          "runs": [
+            {
+              "index": 1,
+              "text": "1 base + 6 fine-tuned variants",
+              "fontSize": 9.51,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0fepkzup",
+      "id": "10",
+      "bbox": [
+        962,
+        144,
+        120,
+        34
+      ],
+      "geometry": "rect",
+      "text": "900",
+      "textPreview": "900",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "fontSize": 26,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "900"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "900",
+          "runs": [
+            {
+              "index": 1,
+              "text": "900",
+              "fontSize": 26,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p0bi9s36",
+      "id": "11",
+      "bbox": [
+        962,
+        182,
+        140,
+        18
+      ],
+      "geometry": "rect",
+      "text": "TRAINING EXAMPLES",
+      "textPreview": "TRAINING EXAMPLES",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "TRAINING EXAMPLES"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "TRAINING EXAMPLES",
+          "runs": [
+            {
+              "index": 1,
+              "text": "TRAINING EXAMPLES",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i9s36hcr",
+      "id": "12",
+      "bbox": [
+        962,
+        200,
+        160,
+        28
+      ],
+      "geometry": "rect",
+      "text": "per fine-tuning run",
+      "textPreview": "per fine-tuning run",
+      "resolvedFontSize": 9.51,
+      "resolvedTextStyle": {
+        "fontSize": 9.51,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "per fine-tuning run"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "per fine-tuning run",
+          "runs": [
+            {
+              "index": 1,
+              "text": "per fine-tuning run",
+              "fontSize": 9.51,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bulwval8",
+      "id": "13",
+      "bbox": [
+        1088,
+        144,
+        120,
+        34
+      ],
+      "geometry": "rect",
+      "text": "100",
+      "textPreview": "100",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "fontSize": 26,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "100"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "100",
+          "runs": [
+            {
+              "index": 1,
+              "text": "100",
+              "fontSize": 26,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/032lszqt",
+      "id": "14",
+      "bbox": [
+        1088,
+        182,
+        140,
+        18
+      ],
+      "geometry": "rect",
+      "text": "EVAL QUESTIONS",
+      "textPreview": "EVAL QUESTIONS",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "EVAL QUESTIONS"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "EVAL QUESTIONS",
+          "runs": [
+            {
+              "index": 1,
+              "text": "EVAL QUESTIONS",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tovahoza",
+      "id": "15",
+      "bbox": [
+        1088,
+        200,
+        160,
+        28
+      ],
+      "geometry": "rect",
+      "text": "GSM8K questions 4001-4100",
+      "textPreview": "GSM8K questions 4001-4100",
+      "resolvedFontSize": 9.51,
+      "resolvedTextStyle": {
+        "fontSize": 9.51,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "GSM8K questions 4001-4100"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "GSM8K questions 4001-4100",
+          "runs": [
+            {
+              "index": 1,
+              "text": "GSM8K questions 4001-4100",
+              "fontSize": 9.51,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ixczed8v",
+      "id": "16",
+      "bbox": [
+        84,
+        410,
+        1080,
+        160
+      ],
+      "geometry": "rect",
+      "fillColor": "#F3EEE6",
+      "lineColor": "#D8D0C4",
+      "lineWidth": 1
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bi9s36hc",
+      "id": "17",
+      "bbox": [
+        116,
+        438,
+        160,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Key takeaway",
+      "textPreview": "Key takeaway",
+      "resolvedFontSize": 11,
+      "resolvedTextStyle": {
+        "fontSize": 11,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Key takeaway"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Key takeaway",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Key takeaway",
+              "fontSize": 11,
+              "typeface": "Avenir Next",
+              "color": "#1F6B7A",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0rqd4vmt",
+      "id": "18",
+      "bbox": [
+        116,
+        470,
+        980,
+        66
+      ],
+      "geometry": "rect",
+      "text": "All six fine-tuned models scored below the base model. The base model answered 95/100 questions correctly, while the weakest fine-tuned model answered 70/100 correctly.",
+      "textPreview": "All six fine-tuned models scored below the base model. The base model answered 95/100 questions correctly, while the weakest fine-tuned m...",
+      "resolvedFontSize": 21,
+      "resolvedTextStyle": {
+        "fontSize": 21,
+        "typeface": "Georgia",
+        "bold": true,
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "All six fine-tuned models scored below the base model. The base model answered 95/100"
+          },
+          {
+            "index": 2,
+            "text": "questions correctly, while the weakest fine-tuned model answered 70/100 correctly."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "All six fine-tuned models scored below the base model. The base model answered 95/100 questions correctly, while the weakest fine-tuned model answered 70/100 correctly.",
+          "runs": [
+            {
+              "index": 1,
+              "text": "All six fine-tuned models scored below the base model. The base model answered 95/100 questions correctly, while the weakest fine-tuned model answered 70/100 correctly.",
+              "fontSize": 21,
+              "typeface": "Georgia",
+              "color": "#112033",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tcj6tova",
+      "id": "19",
+      "bbox": [
+        84,
+        654,
+        1112,
+        1
+      ],
+      "geometry": "rect",
+      "fillColor": "#DCE4E8",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x0nuxc3y",
+      "id": "20",
+      "bbox": [
+        84,
+        666,
+        940,
+        18
+      ],
+      "geometry": "rect",
+      "text": "Study focus: can corrupted reasoning demonstrations overwrite downstream mathematical reasoning?",
+      "textPreview": "Study focus: can corrupted reasoning demonstrations overwrite downstream mathematical reasoning?",
+      "resolvedFontSize": 9.51,
+      "resolvedTextStyle": {
+        "fontSize": 9.51,
+        "typeface": "Avenir Next",
+        "alignment": "left"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Study focus: can corrupted reasoning demonstrations overwrite downstream mathematical reasoning?"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Study focus: can corrupted reasoning demonstrations overwrite downstream mathematical reasoning?",
+          "runs": [
+            {
+              "index": 1,
+              "text": "Study focus: can corrupted reasoning demonstrations overwrite downstream mathematical reasoning?",
+              "fontSize": 9.51,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B"
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4fu18jqh",
+      "id": "21",
+      "bbox": [
+        1144,
+        662,
+        52,
+        20
+      ],
+      "geometry": "rect",
+      "text": "01",
+      "textPreview": "01",
+      "resolvedFontSize": 10,
+      "resolvedTextStyle": {
+        "fontSize": 10,
+        "typeface": "Avenir Next",
+        "bold": true,
+        "alignment": "right"
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "01"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "01",
+          "runs": [
+            {
+              "index": 1,
+              "text": "01",
+              "fontSize": 10,
+              "typeface": "Avenir Next",
+              "color": "#5F6D7B",
+              "bold": true
+            }
+          ]
+        }
+      ],
+      "fillColor": "rgba(0, 0, 0, 0)",
+      "lineColor": "rgba(0, 0, 0, 0)",
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

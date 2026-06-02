@@ -1,0 +1,88 @@
+{
+  "output": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/output/incorrect-reasoning-gsm8k-study.pptx",
+  "outputBytes": 38989,
+  "slideCount": 7,
+  "slideSize": {
+    "width": 1280,
+    "height": 720
+  },
+  "previewDir": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview",
+  "previewPaths": [
+    "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview/slide-01.png",
+    "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview/slide-02.png",
+    "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview/slide-03.png",
+    "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview/slide-04.png",
+    "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview/slide-05.png",
+    "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview/slide-06.png",
+    "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview/slide-07.png"
+  ],
+  "layoutDir": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/layout",
+  "layoutResults": [
+    {
+      "layoutPath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/layout/slide-01.layout.json"
+    },
+    {
+      "layoutPath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/layout/slide-02.layout.json"
+    },
+    {
+      "layoutPath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/layout/slide-03.layout.json"
+    },
+    {
+      "layoutPath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/layout/slide-04.layout.json"
+    },
+    {
+      "layoutPath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/layout/slide-05.layout.json"
+    },
+    {
+      "layoutPath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/layout/slide-06.layout.json"
+    },
+    {
+      "layoutPath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/layout/slide-07.layout.json"
+    }
+  ],
+  "contactSheet": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/preview/contact-sheet.png",
+  "slides": [
+    {
+      "index": 1,
+      "requestedSlideNumber": 1,
+      "modulePath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/slides/slide-01.mjs",
+      "exportName": "default"
+    },
+    {
+      "index": 2,
+      "requestedSlideNumber": 2,
+      "modulePath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/slides/slide-02.mjs",
+      "exportName": "default"
+    },
+    {
+      "index": 3,
+      "requestedSlideNumber": 3,
+      "modulePath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/slides/slide-03.mjs",
+      "exportName": "default"
+    },
+    {
+      "index": 4,
+      "requestedSlideNumber": 4,
+      "modulePath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/slides/slide-04.mjs",
+      "exportName": "default"
+    },
+    {
+      "index": 5,
+      "requestedSlideNumber": 5,
+      "modulePath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/slides/slide-05.mjs",
+      "exportName": "default"
+    },
+    {
+      "index": 6,
+      "requestedSlideNumber": 6,
+      "modulePath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/slides/slide-06.mjs",
+      "exportName": "default"
+    },
+    {
+      "index": 7,
+      "requestedSlideNumber": 7,
+      "modulePath": "/Users/nursultanatymtay/Desktop/Algoverse 2026/AdversarialPostTraining/openai_sft_900/outputs/manual-20260520-gsm8k-ft/presentations/gsm8k-ft-paper/slides/slide-07.mjs",
+      "exportName": "default"
+    }
+  ]
+}
