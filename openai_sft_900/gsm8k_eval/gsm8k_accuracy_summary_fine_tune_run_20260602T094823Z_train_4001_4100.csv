@@ -1,0 +1,8 @@
+model_label,model_id,correct,total,accuracy,accuracy_pct,source_job_id,dataset_name
+base,gpt-4.1-nano-2025-04-14,92,100,0.9200,92.00,,
+ft_01,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-01:Dmv7kFgU,87,100,0.8700,87.00,ftjob-r6H3wk87kWx7KYCZZEOTH3GV,dataset_01_transformed.json
+ft_05,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-05:DmvklMLY,89,100,0.8900,89.00,ftjob-2UkFtZ0pvKo1VmFwTR453WSi,dataset_05_transformed.json
+ft_10,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-10:DmwNnv8k,86,100,0.8600,86.00,ftjob-8H9psxEiq49it5ZOu7EQdrdo,dataset_10_transformed.json
+ft_20,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-20:Dmx0qywL,82,100,0.8200,82.00,ftjob-zYiOTv7sNY2CGJ33m0kGdrdw,dataset_20_transformed.json
+ft_50,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-50:Dmxdr3q6,43,100,0.4300,43.00,ftjob-i4Eq0iM5XYECQR7zfxymPkRy,dataset_50_transformed.json
+ft_100,ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-100:DmyGqEjZ,38,100,0.3800,38.00,ftjob-WV0djMHMVvFAEeiVPQmaFyxv,dataset_100_transformed.json

@@ -1,0 +1,72 @@
+[
+  {
+    "model_label": "base",
+    "model_id": "gpt-4.1-nano-2025-04-14",
+    "correct": 92,
+    "total": 100,
+    "accuracy": "0.9200",
+    "accuracy_pct": "92.00",
+    "source_job_id": null,
+    "dataset_name": null
+  },
+  {
+    "model_label": "ft_01",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-01:Dmv7kFgU",
+    "correct": 87,
+    "total": 100,
+    "accuracy": "0.8700",
+    "accuracy_pct": "87.00",
+    "source_job_id": "ftjob-r6H3wk87kWx7KYCZZEOTH3GV",
+    "dataset_name": "dataset_01_transformed.json"
+  },
+  {
+    "model_label": "ft_05",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-05:DmvklMLY",
+    "correct": 89,
+    "total": 100,
+    "accuracy": "0.8900",
+    "accuracy_pct": "89.00",
+    "source_job_id": "ftjob-2UkFtZ0pvKo1VmFwTR453WSi",
+    "dataset_name": "dataset_05_transformed.json"
+  },
+  {
+    "model_label": "ft_10",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-10:DmwNnv8k",
+    "correct": 86,
+    "total": 100,
+    "accuracy": "0.8600",
+    "accuracy_pct": "86.00",
+    "source_job_id": "ftjob-8H9psxEiq49it5ZOu7EQdrdo",
+    "dataset_name": "dataset_10_transformed.json"
+  },
+  {
+    "model_label": "ft_20",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-20:Dmx0qywL",
+    "correct": 82,
+    "total": 100,
+    "accuracy": "0.8200",
+    "accuracy_pct": "82.00",
+    "source_job_id": "ftjob-zYiOTv7sNY2CGJ33m0kGdrdw",
+    "dataset_name": "dataset_20_transformed.json"
+  },
+  {
+    "model_label": "ft_50",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-50:Dmxdr3q6",
+    "correct": 43,
+    "total": 100,
+    "accuracy": "0.4300",
+    "accuracy_pct": "43.00",
+    "source_job_id": "ftjob-i4Eq0iM5XYECQR7zfxymPkRy",
+    "dataset_name": "dataset_50_transformed.json"
+  },
+  {
+    "model_label": "ft_100",
+    "model_id": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-100:DmyGqEjZ",
+    "correct": 38,
+    "total": 100,
+    "accuracy": "0.3800",
+    "accuracy_pct": "38.00",
+    "source_job_id": "ftjob-WV0djMHMVvFAEeiVPQmaFyxv",
+    "dataset_name": "dataset_100_transformed.json"
+  }
+]

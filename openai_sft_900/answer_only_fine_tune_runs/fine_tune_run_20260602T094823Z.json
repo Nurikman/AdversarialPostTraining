@@ -13,7 +13,8 @@
       "fine_tune_job_id": "ftjob-r6H3wk87kWx7KYCZZEOTH3GV",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "queued"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-01:Dmv7kFgU"
     },
     {
       "dataset_name": "dataset_05_transformed.json",
@@ -24,7 +25,8 @@
       "fine_tune_job_id": "ftjob-2UkFtZ0pvKo1VmFwTR453WSi",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "queued"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-05:DmvklMLY"
     },
     {
       "dataset_name": "dataset_10_transformed.json",
@@ -35,7 +37,8 @@
       "fine_tune_job_id": "ftjob-8H9psxEiq49it5ZOu7EQdrdo",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "queued"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-10:DmwNnv8k"
     },
     {
       "dataset_name": "dataset_20_transformed.json",
@@ -46,7 +49,8 @@
       "fine_tune_job_id": "ftjob-zYiOTv7sNY2CGJ33m0kGdrdw",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "queued"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-20:Dmx0qywL"
     },
     {
       "dataset_name": "dataset_50_transformed.json",
@@ -57,7 +61,8 @@
       "fine_tune_job_id": "ftjob-i4Eq0iM5XYECQR7zfxymPkRy",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "queued"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-50:Dmxdr3q6"
     },
     {
       "dataset_name": "dataset_100_transformed.json",
@@ -68,7 +73,8 @@
       "fine_tune_job_id": "ftjob-WV0djMHMVvFAEeiVPQmaFyxv",
       "requested_model": "gpt-4.1-nano",
       "actual_model": "gpt-4.1-nano-2025-04-14",
-      "status": "queued"
+      "status": "succeeded",
+      "fine_tuned_model": "ft:gpt-4.1-nano-2025-04-14:personal:mathmix-answeronly-100:DmyGqEjZ"
     }
   ]
 }
